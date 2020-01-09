@@ -6,24 +6,27 @@
 package tam.controllers;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import tam.daos.BlogDAO;
 import tam.daos.CommentDAO;
 import tam.dtos.BlogDTO;
 import tam.dtos.CommentDTO;
+import tam.dtos.CommentErrorObject;
 
 /**
  *
  * @author hoang
  */
-public class ArticleDetailLoadingController extends HttpServlet {
+public class CommentPostingController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
     private static final String SUCCESS = "articleDetail.jsp";
+    private static final String INVALID = "articleDetail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -38,22 +41,47 @@ public class ArticleDetailLoadingController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            String email = request.getSession(false).getAttribute("EMAIL").toString();
             int blogID = Integer.parseInt(request.getParameter("blogID"));
-            BlogDAO blogDAO = new BlogDAO();
+            String comment = request.getParameter("comment").trim();
+            String title = request.getParameter("title");
+            String content = request.getParameter("content");
+            String shortDescription = request.getParameter("shortDescription");
+            String author = request.getParameter("author");
+            String postedTime = request.getParameter("postedTime");
             CommentDAO commentDAO = new CommentDAO();
-            BlogDTO blogDetail = blogDAO.getBlogDetailByBlogID(blogID);
-            List<CommentDTO> commentsData = commentDAO.getAllCommentsByBlogID(blogID);
-            if (blogDetail != null) {
-                url = SUCCESS;
-                blogDetail.setBlogID(blogID);
-                request.setAttribute("BlogDetail", blogDetail);
-                request.setAttribute("CommentsData", commentsData);
+
+            CommentErrorObject commentErrorObj = new CommentErrorObject();
+            boolean isValid = true;
+            if (comment.length() == 0) {
+                commentErrorObj.setContentError("Comment cannot be blank!");
+                isValid = false;
+            }
+
+            if (isValid) {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+                LocalDateTime now = LocalDateTime.now();
+                if (commentDAO.postComment(email, blogID, comment, dtf.format(now))) {
+                    BlogDTO blogDetail = new BlogDTO(title, shortDescription, content, author, postedTime, blogID);
+                    request.setAttribute("BlogDetail", blogDetail);
+
+                    List<CommentDTO> commentsData = commentDAO.getAllCommentsByBlogID(blogID);
+                    request.setAttribute("CommentsData", commentsData);
+                    url = SUCCESS;
+                } else {
+                    request.setAttribute("ERROR", "Posting Comment Failed!");
+                }
             } else {
-                url = ERROR;
-                request.setAttribute("ERROR", "Loading Blog Detail Failed!");
+                request.setAttribute("CommentError", commentErrorObj);
+                BlogDTO blogDetail = new BlogDTO(title, shortDescription, content, author, postedTime, blogID);
+                request.setAttribute("BlogDetail", blogDetail);
+                
+                List<CommentDTO> commentsData = commentDAO.getAllCommentsByBlogID(blogID);
+                request.setAttribute("CommentsData", commentsData);
+                url = INVALID;
             }
         } catch (Exception e) {
-            log("ERROR at ArticleDetailLoadingController: " + e.getMessage());
+            log("ERROR at CommentPostingController: " + e.getMessage());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

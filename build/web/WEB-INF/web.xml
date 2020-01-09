@@ -32,6 +32,10 @@
         <servlet-name>SearchController</servlet-name>
         <servlet-class>tam.controllers.SearchController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CommentPostingController</servlet-name>
+        <servlet-class>tam.controllers.CommentPostingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>SearchController</servlet-name>
         <url-pattern>/SearchController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CommentPostingController</servlet-name>
+        <url-pattern>/CommentPostingController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

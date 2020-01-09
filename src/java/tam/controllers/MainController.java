@@ -25,6 +25,8 @@ public class MainController extends HttpServlet {
     private static final String DATALOADING = "DataLoadingController";
     private static final String ARTICLEDETAILLOADING = "ArticleDetailLoadingController";
     private static final String SEARCH = "SearchController";
+    private static final String COMMENTPOSTING = "CommentPostingController";
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
@@ -34,7 +36,7 @@ public class MainController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
@@ -54,13 +56,16 @@ public class MainController extends HttpServlet {
                     url = ARTICLEPOSTING;
                     break;
                 case "loadData":
-                    url = DATALOADING; 
+                    url = DATALOADING;
                     break;
                 case "getBlogDetail":
                     url = ARTICLEDETAILLOADING;
                     break;
                 case "search":
                     url = SEARCH;
+                    break;
+                case "postComment":
+                    url = COMMENTPOSTING;
                     break;
                 default:
                     request.setAttribute("ERROR", "Your action is invalid");
@@ -84,7 +89,7 @@ public class MainController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -98,7 +103,7 @@ public class MainController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         processRequest(request, response);
     }
 

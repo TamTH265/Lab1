@@ -5,6 +5,8 @@
  */
 package tam.dtos;
 
+import java.util.List;
+
 /**
  *
  * @author hoang
@@ -37,6 +39,15 @@ public class BlogDTO {
         this.content = content;
         this.author = author;
         this.postedTime = postedTime;
+    }
+
+    public BlogDTO(String title, String shortDescription, String content, String author, String postedTime, int blogID) {
+        this.title = title;
+        this.shortDescription = shortDescription;
+        this.content = content;
+        this.author = author;
+        this.postedTime = postedTime;
+        this.blogID = blogID;
     }
 
     public int getBlogID() {
