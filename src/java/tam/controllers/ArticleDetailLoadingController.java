@@ -23,7 +23,7 @@ import tam.dtos.CommentDTO;
 public class ArticleDetailLoadingController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String SUCCESS = "articleDetail.jsp";
+    private static final String SUCCESS = "article-detail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

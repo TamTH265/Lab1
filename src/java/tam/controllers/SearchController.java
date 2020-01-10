@@ -22,8 +22,8 @@ import tam.supportMethods.PagingHandler;
 public class SearchController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String ARTICLEPAGE = "articlesPage.jsp";
-    private static final String INVALID = "articlesPage.jsp";
+    private static final String ADMIN = "admin.jsp";
+    private static final String INDEX = "index.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,14 +36,14 @@ public class SearchController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
         String searchedContent = request.getParameter("searchedContent");
+        String role = request.getSession(false).getAttribute("ROLE").toString();
         String pg = request.getParameter("pg");
         int numOfBlogsPerPage = 3;
+        String url = ERROR;
         try {
             if (searchedContent.equals("")) {
                 request.setAttribute("SearchError", "Please Input Value To Search");
-                url = INVALID;
             } else {
                 BlogDAO blogDAO = new BlogDAO();
                 PagingHandler pagingHandler = new PagingHandler();
@@ -58,11 +58,14 @@ public class SearchController extends HttpServlet {
                         request.setAttribute("BlogsData", blogsData);
                         request.setAttribute("TotalPage", totalPage);
                     }
-                    url = ARTICLEPAGE;
                 } else {
                     request.setAttribute("SearchError", "There isn't any results!");
-                    url = ARTICLEPAGE;
                 }
+            }
+            if (role.equals("Admin")) {
+                url = ADMIN;
+            } else {
+                url = INDEX;
             }
         } catch (Exception e) {
             log("ERROR at SearchController: " + e.getMessage());

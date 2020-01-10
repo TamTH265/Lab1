@@ -6,7 +6,6 @@
 package tam.controllers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -69,12 +68,16 @@ public class LoginController extends HttpServlet {
                     session.setAttribute("NAME", name);
                     session.setAttribute("ROLE", role);
 
-                    if (role.equals("Admin")) {
-                        url = ADMIN;
-                    } else if (role.equals("Member")) {
-                        url = MEMBER;
-                    } else {
-                        request.setAttribute("ERROR", "Your role is invalid");
+                    switch (role) {
+                        case "Admin":
+                            url = ADMIN;
+                            break;
+                        case "Member":
+                            url = MEMBER;
+                            break;
+                        default:
+                            request.setAttribute("ERROR", "Your role is invalid");
+                            break;
                     }
                 }
             } else {

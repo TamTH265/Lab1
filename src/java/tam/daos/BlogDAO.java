@@ -63,7 +63,7 @@ public class BlogDAO implements Serializable {
         List<BlogDTO> blogsList = null;
 
         try {
-            String sql = "select BlogID, Author, Title, PostedTime, ShortDescription from (select BlogID, Author, Title, PostedTime, ShortDescription, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog) as blog where blog.rowNum between ? and ? order by PostedTime desc";
+            String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog) as blog where blog.rowNum between ? and ? order by PostedTime desc";
             conn = MyConnection.getMyConnection();
             preStm = conn.prepareStatement(sql);
             preStm.setInt(1, (page - 1) * 3 + 1);
@@ -76,7 +76,8 @@ public class BlogDAO implements Serializable {
                 String title = rs.getString("Title");
                 String shortDescription = rs.getString("ShortDescription");
                 String postedTime = rs.getString("PostedTime");
-                BlogDTO dto = new BlogDTO(blogID, author, title, shortDescription, postedTime);
+                String status = rs.getString("Status");
+                BlogDTO dto = new BlogDTO(blogID, author, title, shortDescription, postedTime, status);
                 blogsList.add(dto);
             }
         } finally {
@@ -132,7 +133,7 @@ public class BlogDAO implements Serializable {
         List<BlogDTO> blogsList = null;
 
         try {
-            String sql = "select BlogID, Author, Title, PostedTime, ShortDescription from (select BlogID, Author, Title, PostedTime, ShortDescription, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Content like ?) as blog where blog.rowNum between ? and ? order by PostedTime desc";
+            String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Content like ?) as blog where blog.rowNum between ? and ? order by PostedTime desc";
             conn = MyConnection.getMyConnection();
             preStm = conn.prepareStatement(sql);
             preStm.setString(1, "%" + searchedContent + "%");
@@ -146,7 +147,8 @@ public class BlogDAO implements Serializable {
                 String title = rs.getString("title");
                 String postedTime = rs.getString("PostedTime");
                 String shortDescription = rs.getString("ShortDescription");
-                BlogDTO blog = new BlogDTO(blogID, author, title, shortDescription, postedTime);
+                String status = rs.getString("Status");
+                BlogDTO blog = new BlogDTO(blogID, author, title, shortDescription, postedTime, status);
                 blogsList.add(blog);
             }
 
