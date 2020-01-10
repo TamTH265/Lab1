@@ -157,7 +157,7 @@ public class BlogDAO implements Serializable {
         return blogsList;
     }
 
-    public int getSearchedBlogsTotal(String searchedContent) throws Exception {
+    public int getSearchedBlogsByContentTotal(String searchedContent) throws Exception {
         int total = 0;
 
         try {

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tam.daos.BlogDAO;
 import tam.dtos.BlogDTO;
-import tam.supportMethods.IntegerChecking;
+import tam.supportMethods.PagingHandler;
 
 /**
  *
@@ -37,36 +37,28 @@ public class SearchController extends HttpServlet {
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+        String searchedContent = request.getParameter("searchedContent");
+        String pg = request.getParameter("pg");
+        int numOfBlogsPerPage = 3;
         try {
-            String searchedContent = request.getParameter("searchedContent");
             if (searchedContent.equals("")) {
                 request.setAttribute("SearchError", "Please Input Value To Search");
                 url = INVALID;
             } else {
                 BlogDAO blogDAO = new BlogDAO();
-                int blogsTotal = blogDAO.getSearchedBlogsTotal(searchedContent);
+                PagingHandler pagingHandler = new PagingHandler();
+                int blogsTotal = blogDAO.getSearchedBlogsByContentTotal(searchedContent);
+
                 if (blogsTotal > 0) {
-                    String pg = request.getParameter("pg");
-                    if (IntegerChecking.isInteger(pg) || pg == null) {
-                        int page = 1;
-                        if (pg != null) {
-                            page = Integer.parseInt(pg);
-                        }
-                        int numOfBlogsPerPage = 3;
-                        int totalPage;
-                        double tmp = (double) blogsTotal / numOfBlogsPerPage;
-                        if (tmp == (int) tmp) {
-                            totalPage = (int) tmp;
-                        } else {
-                            totalPage = (int) tmp + 1;
-                        }
-                        if (page > 0 && page <= totalPage) {
-                            List<BlogDTO> blogsData = blogDAO.searchByContent(searchedContent, page, numOfBlogsPerPage);
-                            request.setAttribute("BlogsData", blogsData);
-                            request.setAttribute("TotalPage", totalPage);
-                        }
-                        url = ARTICLEPAGE;
+                    int totalPage = pagingHandler.getTotalPage(pg, blogsTotal, numOfBlogsPerPage);
+                    int page = pagingHandler.getPage(pg);
+                    if (page > 0 && page <= totalPage) {
+                        List<BlogDTO> blogsData = blogDAO.searchByContent(searchedContent, page, numOfBlogsPerPage);
+
+                        request.setAttribute("BlogsData", blogsData);
+                        request.setAttribute("TotalPage", totalPage);
                     }
+                    url = ARTICLEPAGE;
                 } else {
                     request.setAttribute("SearchError", "There isn't any results!");
                     url = ARTICLEPAGE;

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tam.daos.BlogDAO;
 import tam.dtos.BlogDTO;
-import tam.supportMethods.IntegerChecking;
+import tam.supportMethods.PagingHandler;
 
 /**
  *
@@ -33,29 +33,21 @@ public class DataLoadingController extends HttpServlet {
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = "articlesPage.jsp";
+        String pg = request.getParameter("pg");
+        int numOfBlogsPerPage = 3;
         try {
             BlogDAO blogDAO = new BlogDAO();
+            PagingHandler pagingHandler = new PagingHandler();
             int blogsTotal = blogDAO.getBlogsTotal();
+
             if (blogsTotal > 0) {
-                String pg = request.getParameter("pg");
-                if (IntegerChecking.isInteger(pg) || pg == null) {
-                    int page = 1;
-                    if (pg != null) {
-                        page = Integer.parseInt(pg);
-                    }
-                    int numOfBlogsPerPage = 3;
-                    int totalPage;
-                    double tmp = (double) blogsTotal / numOfBlogsPerPage;
-                    if (tmp == (int) tmp) {
-                        totalPage = (int) tmp;
-                    } else {
-                        totalPage = (int) tmp + 1;
-                    }
-                    if (page > 0 && page <= totalPage) {
-                        List<BlogDTO> blogsData = blogDAO.getAllBlogs(page, numOfBlogsPerPage);
-                        request.setAttribute("BlogsData", blogsData);
-                        request.setAttribute("TotalPage", totalPage);
-                    }
+                int page = pagingHandler.getPage(pg);
+                int totalPage = pagingHandler.getTotalPage(pg, blogsTotal, numOfBlogsPerPage);
+                if (page > 0 && page <= totalPage) {
+                    List<BlogDTO> blogsData = blogDAO.getAllBlogs(page, numOfBlogsPerPage);
+
+                    request.setAttribute("TotalPage", totalPage);
+                    request.setAttribute("BlogsData", blogsData);
                 }
             }
         } catch (Exception e) {

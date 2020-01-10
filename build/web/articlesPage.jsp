@@ -16,15 +16,18 @@
             <c:if test="${param.action == null}">
                 <c:url value="MainController" var="dataLoading"> 
                     <c:param value="loadData" name="action" /> 
+                    <c:param value="loadAllBlogs" name="signal" />
                 </c:url>
                 <c:redirect url="${dataLoading}" />
             </c:if>
         </c:if>
         <h1>Articles Page</h1>
+
         <c:url value="MainController" var="viewAllBlogs">
             <c:param value="loadData" name="action" />
         </c:url>
         <div><a href="${viewAllBlogs}">View All</a></div>
+
         <form action="MainController" method="POST">
             Input here <input type="text" name="searchedContent" value="${param.searchedContent}"/>
             <input type="submit" name="action" value="search">
@@ -32,6 +35,7 @@
         <c:if test="${requestScope.SearchError != null}">
             <span style="color: #f00;">${requestScope.SearchError}</span>
         </c:if>
+
         <c:if test="${requestScope.BlogsData != null}">
             <table border="1">
                 <thead>
@@ -68,8 +72,6 @@
                     </c:if>
                     <c:if test="${param.searchedContent != null}">
                         <c:param value="search" name="action" />
-                    </c:if>
-                    <c:if test="${param.searchedContent != null}">
                         <c:param name="searchedContent" value="${param.searchedContent}" />
                     </c:if>
                     <c:param value="${index}" name="pg" />
@@ -77,7 +79,7 @@
                 <a href="${handlePage}">${index}</a>
             </c:forEach>
         </c:if>
-        <c:if test="${param.searchedContent == null}">
+        <c:if test="${requestScope.SearchError == null}">
             <c:if test="${requestScope.BlogsData == null}">
                 <div style="color: #f00;">There isn't any data!</div>
             </c:if>
