@@ -76,13 +76,14 @@
             </table>
             <c:forEach var = "index" begin = "1" end = "${requestScope.TotalPage}">
                 <c:url value="MainController" var="handlePage">
-                    <c:if test="${param.searchedContent == null && param.searchedArticle == null}">
+                    <c:if test="${param.searchedContent == null && param.searchedArticle == null && paramValues.searchedStatus == null}">
                         <c:param value="loadData" name="action" />
                     </c:if>
-                    <c:if test="${param.searchedContent != null || param.searchedArticle != null || param.searchedStatus != null}">
+                    <c:if test="${param.searchedContent != null}">
                         <c:param value="search" name="action" />
                         <c:param name="searchedContent" value="${param.searchedContent}" />
                         <c:param name="searchedArticle" value="${param.searchedArticle}" />
+
                     </c:if>
                     <c:param value="${index}" name="pg" />
                 </c:url>
