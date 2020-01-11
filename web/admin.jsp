@@ -32,13 +32,13 @@
             <div>Content<input type="text" name="searchedContent" value="${param.searchedContent}" /></div>
             <div>
                 Status
-                <input type="checkbox" name="searchedStatus" value="new" /> New 
-                <input type="checkbox" name="searchedStatus" value="activated" /> Activated
-                <input type="checkbox" name="searchedStatus" value="deleted" /> Deleted
-            </div>
-            <div></div>
-            <input type="submit" name="action" value="search">
-        </form>
+                <input type="checkbox" name="searchedStatus" value="new" <c:if test="${paramValues.searchedStatus[0] != null}">checked="checked"</c:if> /> New 
+                <input type="checkbox" name="searchedStatus" value="activated" <c:if test="${paramValues.searchedStatus[1] != null}">checked="checked"</c:if> /> Activated
+                <input type="checkbox" name="searchedStatus" value="deleted" <c:if test="${paramValues.searchedStatus[2] != null}">checked="checked"</c:if> /> Deleted
+                </div>
+                <div></div>
+                <input type="submit" name="action" value="search">
+            </form>
         <c:if test="${requestScope.SearchError != null}">
             <span style="color: #f00;">${requestScope.SearchError}</span>
         </c:if>
