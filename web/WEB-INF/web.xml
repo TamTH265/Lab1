@@ -21,10 +21,6 @@
         <servlet-class>tam.controllers.ArticlePostingController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>DataLoadingController</servlet-name>
-        <servlet-class>tam.controllers.DataLoadingController</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>ArticleDetailLoadingController</servlet-name>
         <servlet-class>tam.controllers.ArticleDetailLoadingController</servlet-class>
     </servlet>
@@ -35,6 +31,14 @@
     <servlet>
         <servlet-name>CommentPostingController</servlet-name>
         <servlet-class>tam.controllers.CommentPostingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DataLoadingController</servlet-name>
+        <servlet-class>tam.controllers.DataLoadingController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ArticleDetailManagementController</servlet-name>
+        <servlet-class>tam.controllers.ArticleDetailManagementController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
@@ -57,10 +61,6 @@
         <url-pattern>/ArticlePostingController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>DataLoadingController</servlet-name>
-        <url-pattern>/DataLoadingController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>ArticleDetailLoadingController</servlet-name>
         <url-pattern>/ArticleDetailLoadingController</url-pattern>
     </servlet-mapping>
@@ -71,6 +71,14 @@
     <servlet-mapping>
         <servlet-name>CommentPostingController</servlet-name>
         <url-pattern>/CommentPostingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DataLoadingController</servlet-name>
+        <url-pattern>/DataLoadingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ArticleDetailManagementController</servlet-name>
+        <url-pattern>/ArticleDetailManagementController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

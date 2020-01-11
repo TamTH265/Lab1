@@ -26,7 +26,7 @@ public class MainController extends HttpServlet {
     private static final String ARTICLEDETAILLOADING = "ArticleDetailLoadingController";
     private static final String SEARCH = "SearchController";
     private static final String COMMENTPOSTING = "CommentPostingController";
-
+    private static final String ARTICLEDETAILMANAGEMENT = "ArticleDetailManagementController";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
@@ -66,6 +66,12 @@ public class MainController extends HttpServlet {
                     break;
                 case "postComment":
                     url = COMMENTPOSTING;
+                    break;
+                case "approveArticle": 
+                    url = ARTICLEDETAILMANAGEMENT;
+                    break;
+                case "deleteArticle":
+                    url = ARTICLEDETAILMANAGEMENT;
                     break;
                 default:
                     request.setAttribute("ERROR", "Your action is invalid");

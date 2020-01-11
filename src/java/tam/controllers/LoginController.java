@@ -22,7 +22,7 @@ import tam.supportMethods.SHA_256;
 public class LoginController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String ADMIN = "index.jsp";
+    private static final String ADMIN = "DataLoadingController";
     private static final String MEMBER = "index.jsp";
     private static final String INVALID = "login.jsp";
 

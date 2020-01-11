@@ -105,22 +105,23 @@ public class BlogDAO implements Serializable {
         return total;
     }
 
-    public BlogDTO getBlogDetailByBlogID(int blogID) throws Exception {
+    public BlogDTO getBlogDetailByBlogID(int id) throws Exception {
         BlogDTO blog = null;
 
         try {
-            String sql = "select Title, ShortDescription, Content, Author, PostedTime from Blog where BlogID = ?";
+            String sql = "select BlogID, Title, ShortDescription, Content, Author, PostedTime from Blog where BlogID = ?";
             conn = MyConnection.getMyConnection();
             preStm = conn.prepareStatement(sql);
-            preStm.setInt(1, blogID);
+            preStm.setInt(1, id);
             rs = preStm.executeQuery();
             if (rs.next()) {
+                int blogID = rs.getInt("BlogID");
                 String title = rs.getString("Title");
                 String shortDescription = rs.getString("ShortDescription");
                 String content = rs.getString("Content");
                 String author = rs.getString("Author");
                 String postedTime = rs.getString("PostedTime");
-                blog = new BlogDTO(title, shortDescription, content, author, postedTime);
+                blog = new BlogDTO(title, shortDescription, content, author, postedTime, blogID);
             }
         } finally {
             closeConnection();
@@ -129,17 +130,50 @@ public class BlogDAO implements Serializable {
         return blog;
     }
 
-    public List<BlogDTO> searchByContent(String searchedContent, int page, int numOfbBlogsPerPage) throws Exception {
+    public boolean approveArticle(int blogID) throws Exception {
+        boolean isSuccess = false;
+
+        try {
+            String sql = "update Blog set Status = 'Activated' where BlogID = ?";
+            conn = MyConnection.getMyConnection();
+            preStm = conn.prepareStatement(sql);
+            preStm.setInt(1, blogID);
+            isSuccess = preStm.executeUpdate() > 0;
+        } finally {
+            closeConnection();
+        }
+
+        return isSuccess;
+    }
+
+    public boolean deleteArticle(int blogID) throws Exception {
+        boolean isSuccess = false;
+
+        try {
+            String sql = "update Blog set Status = 'Deleted' where BlogID = ?";
+            conn = MyConnection.getMyConnection();
+            preStm = conn.prepareStatement(sql);
+            preStm.setInt(1, blogID);
+            isSuccess = preStm.executeUpdate() > 0;
+        } finally {
+            closeConnection();
+        }
+
+        return isSuccess;
+    }
+
+    public List<BlogDTO> getSearchedBlogsData(String searchedContent, String searchedArticle, String[] searchedStatus, int page, int numOfbBlogsPerPage) throws Exception {
         List<BlogDTO> blogsList = null;
 
         try {
-            String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Content like ?) as blog where blog.rowNum between ? and ? order by PostedTime desc";
             conn = MyConnection.getMyConnection();
-            preStm = conn.prepareStatement(sql);
-            preStm.setString(1, "%" + searchedContent + "%");
-            preStm.setInt(2, (page - 1) * 3 + 1);
-            preStm.setInt(3, (page - 1) * 3 + numOfbBlogsPerPage);
-            rs = preStm.executeQuery();
+
+            if (!searchedContent.equals("") && searchedArticle.equals("") && searchedStatus == null) {
+                searchDataByContent(searchedContent, page, numOfbBlogsPerPage);
+            } else if (searchedContent.equals("") && !searchedArticle.equals("") && searchedStatus == null) {
+                searchDataByArticle(searchedArticle, page, numOfbBlogsPerPage);
+            }
+
             blogsList = new ArrayList<>();
             while (rs.next()) {
                 int blogID = rs.getInt("BlogID");
@@ -151,7 +185,6 @@ public class BlogDAO implements Serializable {
                 BlogDTO blog = new BlogDTO(blogID, author, title, shortDescription, postedTime, status);
                 blogsList.add(blog);
             }
-
         } finally {
             closeConnection();
         }
@@ -159,22 +192,75 @@ public class BlogDAO implements Serializable {
         return blogsList;
     }
 
-    public int getSearchedBlogsByContentTotal(String searchedContent) throws Exception {
-        int total = 0;
+    private void searchDataByContent(String searchedContent, int page, int numOfbBlogsPerPage) throws Exception {
+        String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Content like ?) as blog where blog.rowNum between ? and ? order by PostedTime desc";
+        preStm = conn.prepareStatement(sql);
+        preStm.setString(1, "%" + searchedContent + "%");
+        preStm.setInt(2, (page - 1) * 3 + 1);
+        preStm.setInt(3, (page - 1) * 3 + numOfbBlogsPerPage);
+        rs = preStm.executeQuery();
+    }
 
+    private void searchDataByArticle(String searchedArticle, int page, int numOfbBlogsPerPage) throws Exception {
+        String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Title like ?) as blog where blog.rowNum between ? and ? order by PostedTime desc";
+        preStm = conn.prepareStatement(sql);
+        preStm.setString(1, "%" + searchedArticle + "%");
+        preStm.setInt(2, (page - 1) * 3 + 1);
+        preStm.setInt(3, (page - 1) * 3 + numOfbBlogsPerPage);
+        rs = preStm.executeQuery();
+    }
+    
+    
+    private void searchedDataByStatus(String[] seachedStatus, int page, int numOfBlogsPerPage) throws Exception {
+        
+    }
+    
+    
+    
+    
+
+    public int getSearchedBlogsTotal(String searchedContent, String searchedArticle, String[] searchedStatus) throws Exception {
+        int total = 0;
         try {
-            String sql = "select count(*) from Blog where Content like ?";
             conn = MyConnection.getMyConnection();
-            preStm = conn.prepareStatement(sql);
-            preStm.setString(1, "%" + searchedContent + "%");
-            rs = preStm.executeQuery();
-            if (rs.next()) {
-                total = rs.getInt(1);
+            if (!searchedContent.equals("") && searchedArticle.equals("") && searchedStatus == null) {
+                total = getSearchedBlogsByContentTotal(searchedContent);
+            } else if (searchedContent.equals("") && !searchedArticle.equals("") && searchedStatus == null) {
+                total = getSearchedBlogsByArticleTotal(searchedArticle);
             }
+            
         } finally {
             closeConnection();
         }
 
+        return total;
+    }
+
+    private int getSearchedBlogsByContentTotal(String searchedContent) throws Exception {
+        int total = 0;
+
+        String sql = "select count(*) from Blog where Content like ?";
+        preStm = conn.prepareStatement(sql);
+        preStm.setString(1, "%" + searchedContent + "%");
+        rs = preStm.executeQuery();
+        if (rs.next()) {
+            total = rs.getInt(1);
+        }
+
+        return total;
+    }
+    
+    private int getSearchedBlogsByArticleTotal(String searchedArticle) throws Exception {
+        int total = 0;
+        
+         String sql = "select count(*) from Blog where Title like ?";
+        preStm = conn.prepareStatement(sql);
+        preStm.setString(1, "%" + searchedArticle + "%");
+        rs = preStm.executeQuery();
+        if (rs.next()) {
+            total = rs.getInt(1);
+        }
+        
         return total;
     }
 }

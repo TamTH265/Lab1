@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import tam.daos.BlogDAO;
 import tam.daos.CommentDAO;
 import tam.dtos.BlogDTO;
@@ -23,7 +24,8 @@ import tam.dtos.CommentDTO;
 public class ArticleDetailLoadingController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String SUCCESS = "article-detail.jsp";
+    private static final String ARTICLEDETAIL = "article-detail.jsp";
+    private static final String ARTICLEDETAILMANAGEMENT = "article-detail-management.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -44,7 +46,15 @@ public class ArticleDetailLoadingController extends HttpServlet {
             BlogDTO blogDetail = blogDAO.getBlogDetailByBlogID(blogID);
             List<CommentDTO> commentsData = commentDAO.getAllCommentsByBlogID(blogID);
             if (blogDetail != null) {
-                url = SUCCESS;
+                HttpSession session = request.getSession(false);
+                if (session.getAttribute("ROLE") != null) {
+                    String role = request.getSession(false).getAttribute("ROLE").toString();
+                    if (role.equals("Admin")) {
+                        url = ARTICLEDETAILMANAGEMENT;
+                    } else {
+                        url = ARTICLEDETAIL;
+                    }
+                }
                 blogDetail.setBlogID(blogID);
                 request.setAttribute("BlogDetail", blogDetail);
                 request.setAttribute("CommentsData", commentsData);

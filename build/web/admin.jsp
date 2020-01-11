@@ -28,7 +28,15 @@
         <div><a href="${viewAllBlogs}">View All</a></div>
 
         <form action="MainController" method="POST">
-            Input here <input type="text" name="searchedContent" value="${param.searchedContent}"/>
+            <div>Article<input type="text" name="searchedArticle" value="${param.searchedArticle}" /></div>
+            <div>Content<input type="text" name="searchedContent" value="${param.searchedContent}" /></div>
+            <div>
+                Status
+                <input type="checkbox" name="searchedStatus" value="new" /> New 
+                <input type="checkbox" name="searchedStatus" value="activated" /> Activated
+                <input type="checkbox" name="searchedStatus" value="deleted" /> Deleted
+            </div>
+            <div></div>
             <input type="submit" name="action" value="search">
         </form>
         <c:if test="${requestScope.SearchError != null}">
@@ -60,7 +68,7 @@
                                     <c:param name="action" value="getBlogDetail" />
                                     <c:param name="blogID" value="${blog.blogID}" />
                                 </c:url>
-                                <a href="${handleBlogDetail}">Detail</a>
+                                <a href="${handleBlogDetail}">View</a>
                             </td>
                         </tr>
                     </c:forEach>
@@ -68,12 +76,13 @@
             </table>
             <c:forEach var = "index" begin = "1" end = "${requestScope.TotalPage}">
                 <c:url value="MainController" var="handlePage">
-                    <c:if test="${param.searchedContent == null}">
+                    <c:if test="${param.searchedContent == null && param.searchedArticle == null}">
                         <c:param value="loadData" name="action" />
                     </c:if>
-                    <c:if test="${param.searchedContent != null}">
+                    <c:if test="${param.searchedContent != null || param.searchedArticle != null || param.searchedStatus != null}">
                         <c:param value="search" name="action" />
                         <c:param name="searchedContent" value="${param.searchedContent}" />
+                        <c:param name="searchedArticle" value="${param.searchedArticle}" />
                     </c:if>
                     <c:param value="${index}" name="pg" />
                 </c:url>

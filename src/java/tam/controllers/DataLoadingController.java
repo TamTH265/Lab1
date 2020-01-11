@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import tam.daos.BlogDAO;
 import tam.dtos.BlogDTO;
 import tam.supportMethods.PagingHandler;
@@ -21,8 +22,8 @@ import tam.supportMethods.PagingHandler;
  */
 public class DataLoadingController extends HttpServlet {
 
-    private static final String ADMIN = "admin.jsp";
     private static final String INDEX = "index.jsp";
+    private static final String ADMIN = "admin.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,11 +36,15 @@ public class DataLoadingController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String role = request.getSession(false).getAttribute("ROLE").toString();
         String url = INDEX;
-        if (role.equals("Admin")) {
-            url = ADMIN;
+        HttpSession session = request.getSession(false);
+        if (session.getAttribute("ROLE") != null) {
+            String role = request.getSession(false).getAttribute("ROLE").toString();
+            if (role.equals("Admin")) {
+                url = ADMIN;
+            }
         }
+
         String pg = request.getParameter("pg");
         int numOfBlogsPerPage = 3;
         try {
@@ -52,7 +57,6 @@ public class DataLoadingController extends HttpServlet {
                 int totalPage = pagingHandler.getTotalPage(pg, blogsTotal, numOfBlogsPerPage);
                 if (page > 0 && page <= totalPage) {
                     List<BlogDTO> blogsData = blogDAO.getAllBlogs(page, numOfBlogsPerPage);
-                    System.out.println(blogsData);
 
                     request.setAttribute("TotalPage", totalPage);
                     request.setAttribute("BlogsData", blogsData);

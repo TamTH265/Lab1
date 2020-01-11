@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import tam.daos.BlogDAO;
 import tam.dtos.BlogDTO;
 import tam.supportMethods.PagingHandler;
@@ -36,36 +37,48 @@ public class SearchController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String searchedContent = request.getParameter("searchedContent");
-        String role = request.getSession(false).getAttribute("ROLE").toString();
+        HttpSession session = request.getSession(false);
+        String searchedContent = "";
+        String searchedArticle = "";
+        String[] searchedStatus = null;
+
         String pg = request.getParameter("pg");
         int numOfBlogsPerPage = 3;
         String url = ERROR;
+
         try {
-            if (searchedContent.equals("")) {
-                request.setAttribute("SearchError", "Please Input Value To Search");
-            } else {
-                BlogDAO blogDAO = new BlogDAO();
-                PagingHandler pagingHandler = new PagingHandler();
-                int blogsTotal = blogDAO.getSearchedBlogsByContentTotal(searchedContent);
-
-                if (blogsTotal > 0) {
-                    int totalPage = pagingHandler.getTotalPage(pg, blogsTotal, numOfBlogsPerPage);
-                    int page = pagingHandler.getPage(pg);
-                    if (page > 0 && page <= totalPage) {
-                        List<BlogDTO> blogsData = blogDAO.searchByContent(searchedContent, page, numOfBlogsPerPage);
-
-                        request.setAttribute("BlogsData", blogsData);
-                        request.setAttribute("TotalPage", totalPage);
-                    }
-                } else {
-                    request.setAttribute("SearchError", "There isn't any results!");
+            searchedContent = request.getParameter("searchedContent").trim();
+            if (session.getAttribute("ROLE") != null) {
+                String role = request.getSession(false).getAttribute("ROLE").toString();
+                if (role.equals("Admin")) {
+                    searchedArticle = request.getParameter("searchedArticle").trim();
+                    searchedStatus = request.getParameterValues("searchedStatus");
                 }
             }
-            if (role.equals("Admin")) {
-                url = ADMIN;
+
+            BlogDAO blogDAO = new BlogDAO();
+            PagingHandler pagingHandler = new PagingHandler();
+            int blogsTotal = blogDAO.getSearchedBlogsTotal(searchedContent, searchedArticle, searchedStatus);
+
+            if (blogsTotal > 0) {
+                int totalPage = pagingHandler.getTotalPage(pg, blogsTotal, numOfBlogsPerPage);
+                int page = pagingHandler.getPage(pg);
+                if (page > 0 && page <= totalPage) {
+                    List<BlogDTO> blogsData = blogDAO.getSearchedBlogsData(searchedContent, searchedArticle, searchedStatus, page, numOfBlogsPerPage);
+
+                    request.setAttribute("BlogsData", blogsData);
+                    request.setAttribute("TotalPage", totalPage);
+                }
             } else {
-                url = INDEX;
+                request.setAttribute("SearchError", "There isn't any results!");
+            }
+
+            url = INDEX;
+            if (session.getAttribute("ROLE") != null) {
+                String role = request.getSession(false).getAttribute("ROLE").toString();
+                if (role.equals("Admin")) {
+                    url = ADMIN;
+                }
             }
         } catch (Exception e) {
             log("ERROR at SearchController: " + e.getMessage());
