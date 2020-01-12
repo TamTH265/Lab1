@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import tam.daos.AccountDAO;
 import tam.dtos.AccountErrorObject;
 import tam.supportMethods.SHA_256;
@@ -21,11 +22,12 @@ import tam.supportMethods.SHA_256;
 public class RegisterController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
-    private static final String SUCCESS = "index.jsp";
+    private static final String SUCCESS = "account-verifying.jsp";
     private static final String INVALID = "register.jsp";
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -56,11 +58,18 @@ public class RegisterController extends HttpServlet {
             }
 
             if (isValid) {
+                HttpSession session = request.getSession();
                 AccountDAO accountDAO = new AccountDAO();
                 SHA_256 sha = new SHA_256();
+                int randomVerifyingCode = (int) (Math.random() * 900000) + 100000;
+
                 String encodedPassword = sha.getEncodedString(password);
-                boolean isSuccess = accountDAO.createAccount(email, name, encodedPassword);
-                if (isSuccess) {
+                String role = accountDAO.createAccount(email, name, encodedPassword, randomVerifyingCode);
+                if (role != null) {
+                    session.setAttribute("EMAIL", email);
+                    session.setAttribute("NAME", name);
+                    session.setAttribute("ROLE", role);
+                    session.setAttribute("VERIFYINGCODE", randomVerifyingCode);
                     url = SUCCESS;
                 } else {
                     request.setAttribute("ERROR", "Register Account Failed!");

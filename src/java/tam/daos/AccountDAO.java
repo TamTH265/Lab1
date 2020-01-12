@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import tam.db.MyConnection;
+import tam.supportMethods.EmailSending;
 
 /**
  *
@@ -36,8 +37,8 @@ public class AccountDAO implements Serializable {
         }
     }
 
-    public boolean createAccount(String email, String name, String password) throws Exception {
-        boolean isSuccess = false;
+    public String createAccount(String email, String name, String password, int randomVerifyingCode) throws Exception {
+        String role = null;
         try {
             String sql = "insert into Account(Email, Name, Password, Role, Status) values(?, ?, ?, 'Member', 'New')";
             conn = MyConnection.getMyConnection();
@@ -45,12 +46,15 @@ public class AccountDAO implements Serializable {
             preStm.setString(1, email);
             preStm.setString(2, name);
             preStm.setString(3, password);
-            isSuccess = preStm.executeUpdate() > 0;
+            EmailSending es = new EmailSending(email);
+            if (preStm.executeUpdate() > 0 && es.sendMail(randomVerifyingCode)) {
+                role = "Member";
+            }
         } finally {
             closeConnection();
         }
 
-        return isSuccess;
+        return role;
     }
 
     public String handleLogin(String email, String password) throws Exception {
@@ -89,5 +93,21 @@ public class AccountDAO implements Serializable {
         }
 
         return name;
+    }
+
+    public boolean activeAccount(String activateEmail) throws Exception {
+        boolean isSuccess = false;
+
+        try {
+            String sql = "update Account set Status = 'Activated' where Email = ?";
+            conn = MyConnection.getMyConnection();
+            preStm = conn.prepareStatement(sql);
+            preStm.setString(1, activateEmail);
+            isSuccess = preStm.executeUpdate() > 0;
+        } finally {
+            closeConnection();
+        }
+
+        return isSuccess;
     }
 }

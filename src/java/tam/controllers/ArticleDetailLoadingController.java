@@ -28,7 +28,8 @@ public class ArticleDetailLoadingController extends HttpServlet {
     private static final String ARTICLEDETAILMANAGEMENT = "article-detail-management.jsp";
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -36,7 +37,7 @@ public class ArticleDetailLoadingController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
@@ -51,9 +52,9 @@ public class ArticleDetailLoadingController extends HttpServlet {
                     String role = request.getSession(false).getAttribute("ROLE").toString();
                     if (role.equals("Admin")) {
                         url = ARTICLEDETAILMANAGEMENT;
-                    } else {
-                        url = ARTICLEDETAIL;
                     }
+                } else {
+                    url = ARTICLEDETAIL;
                 }
                 blogDetail.setBlogID(blogID);
                 request.setAttribute("BlogDetail", blogDetail);
@@ -80,7 +81,7 @@ public class ArticleDetailLoadingController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -94,7 +95,7 @@ public class ArticleDetailLoadingController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 

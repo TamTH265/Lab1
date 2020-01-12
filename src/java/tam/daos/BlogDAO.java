@@ -257,7 +257,7 @@ public class BlogDAO implements Serializable {
     public void searchDataByAll(String searchedContent, String searchedArticle, String[] searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
         int length = searchedStatus.length;
         String fSql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Status in ";
-        String lSql = " and Content like ? and Article like ?) as blog where blog.rowNum between ? and ? order by PostedTime desc";
+        String lSql = " and Content like ? and Title like ?) as blog where blog.rowNum between ? and ? order by PostedTime desc";
         String mSql;
         switch (length) {
             case 1:
@@ -305,7 +305,7 @@ public class BlogDAO implements Serializable {
             } else if (!searchedContent.equals("") && searchedArticle.equals("") && searchedStatus != null) {
                 total = getSearchedBlogsByContentAndStatusTotal(searchedContent, searchedStatus);
             } else if (!searchedContent.equals("") && !searchedArticle.equals("") && searchedStatus != null) {
-                getSearchedBlogsByAllTotal(searchedContent, searchedArticle, searchedStatus);
+                total = getSearchedBlogsByAllTotal(searchedContent, searchedArticle, searchedStatus);
             }
 
         } finally {
@@ -393,7 +393,7 @@ public class BlogDAO implements Serializable {
         int total = 0;
         int length = searchedStatus.length;
         String fSql = "select count(*) from Blog where Status in ";
-        String lSql = " and Content like ? and Article like ?";
+        String lSql = " and Content like ? and Title like ?";
         String mSql;
         switch (length) {
             case 1:

@@ -27,8 +27,11 @@ public class MainController extends HttpServlet {
     private static final String SEARCH = "SearchController";
     private static final String COMMENTPOSTING = "CommentPostingController";
     private static final String ARTICLEDETAILMANAGEMENT = "ArticleDetailManagementController";
+    private static final String ACCOUNTACTIVATING = "AccountActivatingController";
+
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -36,7 +39,7 @@ public class MainController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
@@ -67,11 +70,14 @@ public class MainController extends HttpServlet {
                 case "postComment":
                     url = COMMENTPOSTING;
                     break;
-                case "approveArticle": 
+                case "approveArticle":
                     url = ARTICLEDETAILMANAGEMENT;
                     break;
                 case "deleteArticle":
                     url = ARTICLEDETAILMANAGEMENT;
+                    break;
+                case "verify":
+                    url = ACCOUNTACTIVATING;
                     break;
                 default:
                     request.setAttribute("ERROR", "Your action is invalid");
@@ -95,7 +101,7 @@ public class MainController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -109,7 +115,7 @@ public class MainController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 

@@ -32,11 +32,10 @@
             <div>Content<input type="text" name="searchedContent" value="${param.searchedContent}" /></div>
             <div>
                 Status
-                <input type="checkbox" name="searchedStatus" value="new" <c:if test="${paramValues.searchedStatus[0] != null}">checked="checked"</c:if> /> New 
-                <input type="checkbox" name="searchedStatus" value="activated" <c:if test="${paramValues.searchedStatus[1] != null}">checked="checked"</c:if> /> Activated
-                <input type="checkbox" name="searchedStatus" value="deleted" <c:if test="${paramValues.searchedStatus[2] != null}">checked="checked"</c:if> /> Deleted
+                <input type="checkbox" name="searchedStatus" value="new" <c:if test="${paramValues.searchedStatus[0].equals('new')}">checked="checked"</c:if> /> New 
+                <input type="checkbox" name="searchedStatus" value="activated" <c:if test="${paramValues.searchedStatus[0].equals('activated') || paramValues.searchedStatus[1].equals('activated')}">checked="checked"</c:if> /> Activated
+                <input type="checkbox" name="searchedStatus" value="deleted" <c:if test="${paramValues.searchedStatus[0].equals('deleted') || paramValues.searchedStatus[1].equals('deleted') || paramValues.searchedStatus[2].equals('deleted')}">checked="checked"</c:if> /> Deleted
                 </div>
-                <div></div>
                 <input type="submit" name="action" value="search">
             </form>
         <c:if test="${requestScope.SearchError != null}">
@@ -83,7 +82,7 @@
                         <c:param value="search" name="action" />
                         <c:param name="searchedContent" value="${param.searchedContent}" />
                         <c:param name="searchedArticle" value="${param.searchedArticle}" />
-
+                        <c:param name="searchedStatus" value="${paramValues.searchedStatus}" />
                     </c:if>
                     <c:param value="${index}" name="pg" />
                 </c:url>

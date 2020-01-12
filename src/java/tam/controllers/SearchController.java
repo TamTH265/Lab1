@@ -40,7 +40,7 @@ public class SearchController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(false);
         String searchedContent;
-        String searchedArticle = null;
+        String searchedArticle = "";
         String[] searchedStatus = null;
 
         String pg = request.getParameter("pg");
