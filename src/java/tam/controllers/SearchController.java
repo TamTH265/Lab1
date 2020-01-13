@@ -58,7 +58,6 @@ public class SearchController extends HttpServlet {
                         searchedStatus = request.getParameterValues("searchedStatus");
                     }
                 }
-
                 
                 BlogDAO blogDAO = new BlogDAO();
                 PagingHandler pagingHandler = new PagingHandler();

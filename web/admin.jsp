@@ -13,7 +13,7 @@
     </head>
     <body>
         <c:if test="${param.searchedContent == null}">
-            <c:if test="${param.action == null}">
+            <c:if test="${!param.action.equals('loadData')}">
                 <c:url value="MainController" var="dataLoading"> 
                     <c:param value="loadData" name="action" /> 
                 </c:url>
@@ -82,10 +82,9 @@
                         <c:param value="search" name="action" />
                         <c:param name="searchedContent" value="${param.searchedContent}" />
                         <c:param name="searchedArticle" value="${param.searchedArticle}" />
-                        <c:if test="${paramValues.searchedStatus}">
-                            
-                        </c:if>
-                        <c:param name="searchedStatus" value="${paramValues.searchedStatus}" />
+                        <c:forEach items="${paramValues.searchedStatus}" var="status">
+                            <c:param name="searchedStatus" value="${status}" />
+                        </c:forEach>
                     </c:if>
                     <c:param value="${index}" name="pg" />
                 </c:url>

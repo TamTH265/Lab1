@@ -49,7 +49,7 @@ and open the template in the editor.
     padding: 0 30px;
     width: 70%;
     margin: 0 10px;
-    border-radius: 30px;
+    border-radius: 999px;
     border: 1px solid #131627;
     color: #131627;
     transition: all .2s;
@@ -57,7 +57,7 @@ and open the template in the editor.
 
 .container .blog-container form .comment-posting:focus {
     box-shadow: 0 0 5px #21d397;
-    border: 1px solid #333;
+    border: 1px solid #555;
 }
 
 .container .blog-container form .comment-btn {
@@ -65,7 +65,7 @@ and open the template in the editor.
     border: none;
     width: 150px;
     margin: 0 10px;
-    border-radius: 30px;
+    border-radius: 999px;
     background: #131627;
     color: #fff;
 }

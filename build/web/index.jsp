@@ -34,7 +34,7 @@
         </header>
 
         <c:if test="${param.searchedContent == null}">
-            <c:if test="${param.action == null}">
+            <c:if test="${!param.action.equals('loadData')}">
                 <c:url value="MainController" var="dataLoading"> 
                     <c:param value="loadData" name="action" /> 
                 </c:url>

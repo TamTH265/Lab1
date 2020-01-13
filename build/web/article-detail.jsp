@@ -39,7 +39,7 @@
                 <div class="blog-container">
                     <h1 class="blog-title">${BlogDetail.title}</h1>
                     <div class="blog-annotation">
-                        Posted by <span class="blog-author">${BlogDetail.author}</span> by <span class="blog-posted-time">${BlogDetail.postedTime}</span>
+                        Posted by <span class="blog-author">${BlogDetail.author}</span> at <span class="blog-posted-time">${BlogDetail.postedTime}</span>
                     </div>
                     <div class="blog-content">${BlogDetail.content}</div>
                     <c:url value="MainController" var="postComment">
