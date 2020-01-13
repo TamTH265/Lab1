@@ -40,8 +40,10 @@ public class ArticleDetailLoadingController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
+
         try {
             int blogID = Integer.parseInt(request.getParameter("blogID"));
+
             BlogDAO blogDAO = new BlogDAO();
             CommentDAO commentDAO = new CommentDAO();
             BlogDTO blogDetail = blogDAO.getBlogDetailByBlogID(blogID);
@@ -52,6 +54,8 @@ public class ArticleDetailLoadingController extends HttpServlet {
                     String role = request.getSession(false).getAttribute("ROLE").toString();
                     if (role.equals("Admin")) {
                         url = ARTICLEDETAILMANAGEMENT;
+                    } else {
+                        url = ARTICLEDETAIL;
                     }
                 } else {
                     url = ARTICLEDETAIL;

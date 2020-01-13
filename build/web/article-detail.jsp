@@ -10,48 +10,117 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700|Roboto:400,500,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="./styles/header.css" rel="stylesheet" />
+        <link href="./styles/footer.css" rel="stylesheet" />
+        <link rel="stylesheet" href="./styles/article-detail.css" />
     </head>
     <body>
-        <h1>Article Detail</h1>
-        <c:if test="${requestScope.BlogDetail != null}">   
-            <c:set value="${requestScope.BlogDetail}" var="BlogDetail" />
-            <ul>
-                <li>${BlogDetail.title}</li>
-                <li>${BlogDetail.shortDescription}</li>
-                <li>${BlogDetail.content}</li>
-                <li>${BlogDetail.author}</li>
-                <li>${BlogDetail.postedTime}</li>
-            </ul>
-            <c:url value="MainController" var="postComment">
-                <c:param value="${BlogDetail.title}" name="title" />
-                <c:param value="${BlogDetail.shortDescription}" name="shortDescription" />
-                <c:param value="${BlogDetail.content}" name="content" />
-                <c:param value="${BlogDetail.author}" name="author" />
-                <c:param value="${BlogDetail.postedTime}" name="postedTime" />
-                <c:param value="${BlogDetail.blogID}" name="blogID" />
-            </c:url>
-            <form action="${postComment}" method="POST">
-                <textarea name="comment"></textarea>
-                <c:if test="${requestScope.CommentError.contentError != null}">
-                    <span style="color: #f00;">${requestScope.CommentError.contentError}</span>
-                </c:if>
-                <input type="submit" name="action" value="postComment" />
-            </form>
-            <h3>Comments List</h3>
-            <c:if test="${requestScope.CommentsData != null}">
-                <ul>
-                    <c:forEach items="${requestScope.CommentsData}" var="comment">
-                        <li>
-                            <span style="color: #00f">${comment.userName}</span>
-                            <span>${comment.content}</span>
-                            <span style="color: #333">${comment.commentTime}</span>
-                        </li>
-                    </c:forEach>
+        <header>
+            <nav class="nav-app">
+                <div class="logo">
+                    <a href="index.jsp"><img src="./images/logo.png" alt=""></a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.jsp">Home</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><button><a href="login.jsp">Sign In</a></button></li>
+                    <li><button><a href="register.jsp">Sign Up</a></button></li>
                 </ul>
+            </nav>
+        </header>
+
+        <div class="container">
+            <c:if test="${requestScope.BlogDetail != null}">   
+                <c:set value="${requestScope.BlogDetail}" var="BlogDetail" />
+                <div class="blog-container">
+                    <h1 class="blog-title">${BlogDetail.title}</h1>
+                    <div class="blog-annotation">
+                        Posted by <span class="blog-author">${BlogDetail.author}</span> by <span class="blog-posted-time">${BlogDetail.postedTime}</span>
+                    </div>
+                    <div class="blog-content">${BlogDetail.content}</div>
+                    <c:url value="MainController" var="postComment">
+                        <c:param value="${BlogDetail.title}" name="title" />
+                        <c:param value="${BlogDetail.content}" name="content" />
+                        <c:param value="${BlogDetail.author}" name="author" />
+                        <c:param value="${BlogDetail.postedTime}" name="postedTime" />
+                        <c:param value="${BlogDetail.blogID}" name="blogID" />
+                    </c:url>
+                    <form action="${postComment}" method="POST">
+                        <input type="text" class="comment-posting" name="comment" value="${param.comment}" placeholder="Add a comment..."/>
+                        <button class="comment-btn" type="submit" name="action" value="postComment">Add Comment</button>
+                    </form>
+                </div>
+
+                <c:if test="${requestScope.CommentsData != null}">
+                    <div class="comment-list-container">
+                        <c:forEach items="${requestScope.CommentsData}" var="comment">
+                            <div class="comment-item">
+                                <div class="comment-annotation">
+                                    <span class="comment-name">${comment.userName}</span>
+                                    <span class="comment-time">${comment.commentTime}</span>
+                                </div>
+                                <div class="comment-content">${comment.content}</div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </c:if>
             </c:if>
-            <c:if test="${requestScope.CommentsData == null}">
-                <span style="color: #f00;">There isn't any comments in this article!</span>
-            </c:if>
-        </c:if>
+        </div>
+
+        <footer class="container-fluid main-footer">
+            <div class="row">
+                <div class="main-footer-contacts col-lg-4 col-md-12">
+                    <h3>Contact Us</h3>
+                    <ul class="contacts-list">
+                        <li>
+                            <p>1 (800) 686-6688</p>
+                            <p>blog@gmail.com</p>
+                        </li>
+                        <li>
+                            <p>40 Baria Sreet 133/2</p>
+                            <p>NewYork City, US</p>
+                        </li>
+                        <li>Open hours: 8.00-22.00 Mon-Sat</li>
+                    </ul>
+                </div>
+                <div class="main-footer-legal col-lg-4 col-md-12">
+                    <h3>Legal</h3>
+                    <ul class="legal-list">
+                        <li>
+                            <a href="#">Privacy Policy</a>
+                        </li>
+                        <li>
+                            <a href="#">Terms And Conditions</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="main-footer-newsletter col-lg-4 col-md-12">
+                    <h3>Our Newsletter</h3>
+                    <p>Subscribe to our mailing list to get the updates to your email inbox.</p>
+                    <form>
+                        <input type="text" placeholder="Email">
+                        <button type="button">SUBSCRIBE</button>
+                    </form>
+                    <ul class="links-list">
+                        <li><i class="fab fa-facebook-f"></i></li>
+                        <li><i class="fab fa-twitter"></i></li>
+                        <li><i class="fab fa-google-plus-g"></i></li>
+                        <li><i class="fab fa-instagram"></i></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-reserved">
+                Copyright ©2019 All rights reserved
+            </div>
+        </footer>
+
+        <script src="https://kit.fontawesome.com/c4b1e58fe3.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     </body>
 </html>

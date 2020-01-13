@@ -82,6 +82,9 @@
                         <c:param value="search" name="action" />
                         <c:param name="searchedContent" value="${param.searchedContent}" />
                         <c:param name="searchedArticle" value="${param.searchedArticle}" />
+                        <c:if test="${paramValues.searchedStatus}">
+                            
+                        </c:if>
                         <c:param name="searchedStatus" value="${paramValues.searchedStatus}" />
                     </c:if>
                     <c:param value="${index}" name="pg" />

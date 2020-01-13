@@ -1,0 +1,106 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 13, 2020, 2:53:16 PM
+    Author     : hoang
+*/
+.container {
+    margin-top: 50px;
+    margin-bottom: 30px;
+    padding: 0 150px;
+    font-family: 'Roboto', sans-serif;
+    box-shadow: 0 1px 20px 5px rgba(0, 0, 0, 0.2);
+}
+
+.container .blog-container {
+    padding: 30px 0 0 0;
+}
+
+.container .blog-container .blog-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    margin: 0;
+}
+
+.container .blog-container .blog-annotation {
+    font-size: 14px;
+    padding: 5px 0 10px 0;
+    color: #888;
+}
+
+.container .blog-container .blog-content {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 20px 0;
+}
+
+.container .blog-container form {
+    padding: 20px 0 50px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.container .blog-container form .comment-posting {
+    height: 45px;
+    line-height: 45px;
+    padding: 0 30px;
+    width: 70%;
+    margin: 0 10px;
+    border-radius: 30px;
+    border: 1px solid #131627;
+    color: #131627;
+    transition: all .2s;
+}
+
+.container .blog-container form .comment-posting:focus {
+    box-shadow: 0 0 5px #21d397;
+    border: 1px solid #333;
+}
+
+.container .blog-container form .comment-btn {
+    height: 45px;
+    border: none;
+    width: 150px;
+    margin: 0 10px;
+    border-radius: 30px;
+    background: #131627;
+    color: #fff;
+}
+.container .blog-container form .comment-btn:hover {
+    color: #21d397;
+}
+
+.container .comment-list-container {
+    padding-bottom: 30px;
+}
+
+.container .comment-list-container .comment-item {
+    border-top: 1px solid #ddd;
+    padding:  10px 20px 0 20px;
+    cursor: default;
+    transition: all .2s;
+}
+
+.container .comment-list-container .comment-item:hover {
+    background: rgba(33,211,151, 0.1);
+}
+
+.container .comment-list-container .comment-item .comment-annotation .comment-name {
+    color: #000;
+    font-weight: 700;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.container .comment-list-container .comment-item .comment-annotation .comment-time {
+    color: #aaa;
+    font-size: 16px;
+    font-weight: 400;   
+}
+
+.container .comment-list-container .comment-item .comment-content {
+    padding: 5px 0 25px 0;
+}

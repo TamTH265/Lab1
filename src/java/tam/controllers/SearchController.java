@@ -59,6 +59,7 @@ public class SearchController extends HttpServlet {
                     }
                 }
 
+                
                 BlogDAO blogDAO = new BlogDAO();
                 PagingHandler pagingHandler = new PagingHandler();
                 int blogsTotal = blogDAO.getSearchedBlogsTotal(searchedContent, searchedArticle, searchedStatus);

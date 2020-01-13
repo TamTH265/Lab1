@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="./styles/header.css" rel="stylesheet" />
         <link href="./styles/footer.css" rel="stylesheet" />
+        <link rel="stylesheet" href="./styles/index.css"/>
     </head>
     <body>
         <header>
@@ -27,7 +28,7 @@
                     <li><a href="#">Contact</a></li>
                     <li><a href="#">About</a></li>
                     <li><button><a href="login.jsp">Sign In</a></button></li>
-                    <li><button><a href="sign-up.jsp">Sign Up</a></button></li>
+                    <li><button><a href="register.jsp">Sign Up</a></button></li>
                 </ul>
             </nav>
         </header>
@@ -40,69 +41,62 @@
                 <c:redirect url="${dataLoading}" />
             </c:if>
         </c:if>
-        <h1>Index Page</h1>
+        <div class="container">
+            <c:url value="MainController" var="viewAllBlogs">
+                <c:param value="loadData" name="action" />
+            </c:url>
 
-        <c:url value="MainController" var="viewAllBlogs">
-            <c:param value="loadData" name="action" />
-        </c:url>
-        <div><a href="${viewAllBlogs}">View All</a></div>
 
-        <form action="MainController" method="POST">
-            Input here <input type="text" name="searchedContent" value="${param.searchedContent}"/>
-            <input type="submit" name="action" value="search">
-        </form>
-        <c:if test="${requestScope.SearchError != null}">
-            <span style="color: #f00;">${requestScope.SearchError}</span>
-        </c:if>
-
-        <c:if test="${requestScope.BlogsData != null}">
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>No.</th>
-                        <th>Tile</th>
-                        <th>Short Description</th>
-                        <th>Author</th>
-                        <th>Posted Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${requestScope.BlogsData}" var="blog" varStatus="counter" > 
-                        <tr>
-                            <td>${counter.count}</td>
-                            <td>
-                                <c:url var="handleBlogDetail" value="MainController">
-                                    <c:param name="action" value="getBlogDetail" />
-                                    <c:param name="blogID" value="${blog.blogID}" />
-                                </c:url>
-                                <a href="${handleBlogDetail}">${blog.title}</a>
-                            </td>
-                            <td>${blog.shortDescription}</td>
-                            <td>${blog.author}</td>
-                            <td>${blog.postedTime}</td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
-            <c:forEach var = "index" begin = "1" end = "${requestScope.TotalPage}">
-                <c:url value="MainController" var="handlePage">
-                    <c:if test="${param.searchedContent == null}">
-                        <c:param value="loadData" name="action" />
-                    </c:if>
-                    <c:if test="${param.searchedContent != null}">
-                        <c:param value="search" name="action" />
-                        <c:param name="searchedContent" value="${param.searchedContent}" />
-                    </c:if>
-                    <c:param value="${index}" name="pg" />
-                </c:url>
-                <a href="${handlePage}">${index}</a>
-            </c:forEach>
-        </c:if>
-        <c:if test="${requestScope.SearchError == null}">
-            <c:if test="${requestScope.BlogsData == null}">
-                <div style="color: #f00;">There isn't any data!</div>
+            <form action="MainController" method="POST" class="content-search-form">
+                <div>
+                    <input class="search-field" type="text" name="searchedContent" value="${param.searchedContent}" placeholder="Search content" /><button class="search-btn" type="submit" name="action" value="search"><i class="fas fa-search"></i></button>
+                </div>
+                <a class="view-all-btn" href="${viewAllBlogs}">View All</a>
+            </form>
+            <c:if test="${requestScope.SearchError != null}">
+                <span style="color: #f00;">${requestScope.SearchError}</span>
             </c:if>
-        </c:if>
+
+            <c:if test="${requestScope.BlogsData != null}">
+                <c:forEach items="${requestScope.BlogsData}" var="blog"> 
+                    <div class="blog-item">
+                        <div class="title">                    
+                            <c:url var="handleBlogDetail" value="MainController">
+                                <c:param name="action" value="getBlogDetail" />
+                                <c:param name="blogID" value="${blog.blogID}" />
+                            </c:url>
+                            <h3><a href="${handleBlogDetail}">${blog.title}</a></h3>
+                        </div>
+                        <div class="annotation">
+                            Posted by <span class="author">${blog.author}</span> at <span class="posted-time">${blog.postedTime}</span>
+                        </div>
+                        <div class="short-description">${blog.shortDescription}</div>
+                    </div>
+                </c:forEach>
+
+                <div class="page-container">
+                    <c:forEach var = "index" begin = "1" end = "${requestScope.TotalPage}">
+                        <c:url value="MainController" var="handlePage">
+                            <c:if test="${param.searchedContent == null}">
+                                <c:param value="loadData" name="action" />
+                            </c:if>
+                            <c:if test="${param.searchedContent != null}">
+                                <c:param value="search" name="action" />
+                                <c:param name="searchedContent" value="${param.searchedContent}" />
+                            </c:if>
+                            <c:param value="${index}" name="pg" />
+                        </c:url>
+                        <a class="page-item" href="${handlePage}">${index}</a>
+                    </c:forEach>
+                </div>
+
+            </c:if>
+            <c:if test="${requestScope.SearchError == null}">
+                <c:if test="${requestScope.BlogsData == null}">
+                    <div style="color: #f00;">There isn't any data!</div>
+                </c:if>
+            </c:if>
+        </div>
 
         <footer class="container-fluid main-footer">
             <div class="row">
@@ -120,14 +114,6 @@
                         <li>Open hours: 8.00-22.00 Mon-Sat</li>
                     </ul>
                 </div>
-<!--                <div class="main-footer-services col-lg-3 col-md-6">
-                    <h3>Our Services</h3>
-                    <ul class="services-list">
-                        <li><a href="#">Special Food, Drink Booking</a></li>
-                        <li><a href="#">Special Food, Drink Booking</a></li>
-                        <li><a href="#">Special Food, Drink Booking</a></li>
-                    </ul>
-                </div>-->
                 <div class="main-footer-legal col-lg-4 col-md-12">
                     <h3>Legal</h3>
                     <ul class="legal-list">

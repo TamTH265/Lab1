@@ -1,0 +1,139 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 13, 2020, 6:54:35 AM
+    Author     : hoang
+*/
+body {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+.content-search-form {
+    height: 100px;
+    position: relative;
+}
+
+.content-search-form .view-all-btn {
+    background: #131627;
+    position: absolute;
+    display: block;
+    height: 40px;
+    line-height: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    text-align: center;
+    right: 0;
+    color: #fff;
+}
+
+.content-search-form div {
+    display: flex;
+    width: 45%;
+    position: absolute; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.content-search-form .search-field {
+    margin: 0;
+    height: 40px;
+    line-height: 40px;
+    width: 85%;
+    box-sizing: border-box;
+    padding: 0 15px;
+    outline: none;
+    border: 1px solid #131627;
+    border-right: none;
+    color: #131627;
+}
+
+.content-search-form .search-field:hover {
+    border: 1px solid #131627;
+    border-right: none;
+}
+
+.content-search-form .search-field:focus {
+    border: 2px solid #131627;
+    border-right: none;
+}
+
+.content-search-form .search-btn {
+    height: 40px;
+    width: 15%;
+    margin: 0;
+    border: none;
+    color: #fff;
+    background: #131627;
+}
+
+.content-search-form .search-btn:hover i {
+    color: #21d397;
+}
+
+.blog-item {
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 10px 20px;
+}
+
+.blog-item .title h3 {
+    margin: 0;
+}
+
+.blog-item .title h3 a {
+    color: #000;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.blog-item .title h3 a:hover {
+    text-decoration: underline;
+}
+
+.blog-item .title h3 a:visited {
+    color: #000;
+}
+
+.blog-item .annotation {
+    color: #888;
+    font-size: 14px;
+}
+
+.blog-item .short-description {
+    margin-top: 10px;
+}
+
+.page-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 30px 0;
+}
+
+.page-container .page-item {
+    margin: 0 5px;
+    border: 1px solid #333;
+    border-bottom: 4px solid #131627;
+    display: block;
+    width: 30px;
+    text-align: center;
+    height: 34px;
+    line-height: 30px;
+    color: #131627;
+    transition: all .2s;
+}
+
+.page-container .page-item:hover {
+    background: #131627;
+    color: #21d397;
+}
+
+/*.page-container .page-item:visited {
+    color: #131627;
+}*/

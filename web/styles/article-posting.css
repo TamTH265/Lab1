@@ -1,0 +1,48 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 13, 2020, 1:44:10 PM
+    Author     : hoang
+*/
+.container .article-post-title {
+    text-align: center;
+    padding: 50px 0 20px 0;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.container form {
+    padding: 0 0 50px 0;
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.container .form-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.container .error {
+    color: #f00;
+    position: absolute;
+    font-size: 14px;
+    bottom: -20px;
+}
+
+.container .submit-btn {
+    border: none;
+    width: 100px;
+    height: 35px;
+    background: #131627;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+
