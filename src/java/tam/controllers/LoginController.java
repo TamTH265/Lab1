@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import tam.daos.AccountDAO;
-import tam.dtos.AccountErrorObject;
 import tam.supportMethods.SHA_256;
 
 /**
@@ -27,7 +26,8 @@ public class LoginController extends HttpServlet {
     private static final String INVALID = "login.jsp";
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -42,47 +42,31 @@ public class LoginController extends HttpServlet {
             String email = request.getParameter("email");
             String password = request.getParameter("password");
 
-            AccountErrorObject accountErrorObj = new AccountErrorObject();
-            boolean isValid = true;
-            if (email.length() == 0) {
-                accountErrorObj.setEmailError("Email cannot be blank!");
-                isValid = false;
-            }
-            if (password.length() == 0) {
-                accountErrorObj.setPasswordError("Password cannot be blank!");
-                isValid = false;
-            }
-
-            if (isValid) {
-                AccountDAO accountDAO = new AccountDAO();
-                SHA_256 sha = new SHA_256();
-                String encodedPassword = sha.getEncodedString(password);
-                String role = accountDAO.handleLogin(email, encodedPassword);
-                if (role.equals("failed")) {
-                    request.setAttribute("InvalidAccount", "Username or Password is invalid!");
-                    url = INVALID;
-                } else {
-                    HttpSession session = request.getSession();
-                    String name = accountDAO.getLoginName(email, encodedPassword);
-                    session.setAttribute("EMAIL", email);
-                    session.setAttribute("NAME", name);
-                    session.setAttribute("ROLE", role);
-
-                    switch (role) {
-                        case "Admin":
-                            url = ADMIN;
-                            break;
-                        case "Member":
-                            url = MEMBER;
-                            break;
-                        default:
-                            request.setAttribute("ERROR", "Your role is invalid");
-                            break;
-                    }
-                }
-            } else {
-                request.setAttribute("AccountError", accountErrorObj);
+            AccountDAO accountDAO = new AccountDAO();
+            SHA_256 sha = new SHA_256();
+            String encodedPassword = sha.getEncodedString(password);
+            String role = accountDAO.handleLogin(email, encodedPassword);
+            if (role.equals("failed")) {
+                request.setAttribute("InvalidAccount", "Username or Password is invalid!");
                 url = INVALID;
+            } else {
+                HttpSession session = request.getSession();
+                String name = accountDAO.getLoginName(email, encodedPassword);
+                session.setAttribute("EMAIL", email);
+                session.setAttribute("NAME", name);
+                session.setAttribute("ROLE", role);
+
+                switch (role) {
+                    case "Admin":
+                        url = ADMIN;
+                        break;
+                    case "Member":
+                        url = MEMBER;
+                        break;
+                    default:
+                        request.setAttribute("ERROR", "Your role is invalid");
+                        break;
+                }
             }
         } catch (Exception e) {
             log("Error at LoginController:" + e.getMessage());

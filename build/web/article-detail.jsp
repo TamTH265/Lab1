@@ -50,7 +50,7 @@
                         <c:param value="${BlogDetail.blogID}" name="blogID" />
                     </c:url>
                     <form action="${postComment}" method="POST">
-                        <input type="text" class="comment-posting" name="comment" value="${param.comment}" placeholder="Add a comment..."/>
+                        <input type="text" class="comment-posting" name="comment" placeholder="Add a comment..."/>
                         <button class="comment-btn" type="submit" name="action" value="postComment">Add Comment</button>
                     </form>
                 </div>
