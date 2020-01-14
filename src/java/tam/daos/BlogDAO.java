@@ -182,7 +182,7 @@ public class BlogDAO implements Serializable {
         return isSuccess;
     }
 
-    public List<BlogDTO> getSearchedBlogsData(String searchedContent, String searchedArticle, String[] searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
+    public List<BlogDTO> getSearchedBlogsData(String searchedContent, String searchedArticle, String searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
         List<BlogDTO> blogsList = null;
 
         try {
@@ -235,86 +235,28 @@ public class BlogDAO implements Serializable {
         rs = preStm.executeQuery();
     }
 
-    private void searchDataByContentAndStatus(String searchedContent, String[] searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
-        int length = searchedStatus.length;
-        String fSql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Status in ";
-        String lSql = " and Content like ? ) as blog where blog.rowNum between ? and ? order by PostedTime desc";
-        String mSql;
-        switch (length) {
-            case 1:
-                mSql = "(?)";
-                break;
-            case 2:
-                mSql = "(?, ?)";
-                break;
-            default:
-                mSql = "(?, ?, ?)";
-                break;
-        }
-        String sql = fSql + mSql + lSql;
+    private void searchDataByContentAndStatus(String searchedContent, String searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
+        String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Status = ? and Content like ? ) as blog where blog.rowNum between ? and ? order by PostedTime desc";
         preStm = conn.prepareStatement(sql);
-
-        switch (length) {
-            case 1:
-                preStm.setString(length, searchedStatus[0]);
-                break;
-            case 2:
-                preStm.setString(length - 1, searchedStatus[0]);
-                preStm.setString(length, searchedStatus[1]);
-                break;
-            default:
-                preStm.setString(length - 2, searchedStatus[0]);
-                preStm.setString(length - 1, searchedStatus[1]);
-                preStm.setString(length, searchedStatus[2]);
-                break;
-        }
-        preStm.setString(length + 1, "%" + searchedContent + "%");
-        preStm.setInt(length + 2, (page - 1) * 3 + 1);
-        preStm.setInt(length + 3, (page - 1) * 3 + numOfBlogsPerPage);
+        preStm.setString(1, searchedStatus);
+        preStm.setString(2, "%" + searchedContent + "%");
+        preStm.setInt(3, (page - 1) * 3 + 1);
+        preStm.setInt(4, (page - 1) * 3 + numOfBlogsPerPage);
         rs = preStm.executeQuery();
     }
 
-    public void searchDataByAll(String searchedContent, String searchedArticle, String[] searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
-        int length = searchedStatus.length;
-        String fSql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Status in ";
-        String lSql = " and Content like ? and Title like ?) as blog where blog.rowNum between ? and ? order by PostedTime desc";
-        String mSql;
-        switch (length) {
-            case 1:
-                mSql = "(?)";
-                break;
-            case 2:
-                mSql = "(?, ?)";
-                break;
-            default:
-                mSql = "(?, ?, ?)";
-                break;
-        }
-        String sql = fSql + mSql + lSql;
+    public void searchDataByAll(String searchedContent, String searchedArticle, String searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
+        String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime) as rowNum from Blog where Content like ? and Title like ? and Status = ?) as blog where blog.rowNum between ? and ? order by PostedTime desc";
         preStm = conn.prepareStatement(sql);
-
-        switch (length) {
-            case 1:
-                preStm.setString(length, searchedStatus[0]);
-                break;
-            case 2:
-                preStm.setString(length - 1, searchedStatus[0]);
-                preStm.setString(length, searchedStatus[1]);
-                break;
-            default:
-                preStm.setString(length - 2, searchedStatus[0]);
-                preStm.setString(length - 1, searchedStatus[1]);
-                preStm.setString(length, searchedStatus[2]);
-                break;
-        }
-        preStm.setString(length + 1, "%" + searchedContent + "%");
-        preStm.setString(length + 2, "%" + searchedArticle + "%");
-        preStm.setInt(length + 3, (page - 1) * 3 + 1);
-        preStm.setInt(length + 4, (page - 1) * 3 + numOfBlogsPerPage);
+        preStm.setString(1, "%" + searchedContent + "%");
+        preStm.setString(2, "%" + searchedArticle + "%");
+        preStm.setString(3, searchedStatus);
+        preStm.setInt(4, (page - 1) * 3 + 1);
+        preStm.setInt(5, (page - 1) * 3 + numOfBlogsPerPage);
         rs = preStm.executeQuery();
     }
 
-    public int getSearchedBlogsTotal(String searchedContent, String searchedArticle, String[] searchedStatus) throws Exception {
+    public int getSearchedBlogsTotal(String searchedContent, String searchedArticle, String searchedStatus) throws Exception {
         int total = 0;
         try {
             conn = MyConnection.getMyConnection();
@@ -364,43 +306,12 @@ public class BlogDAO implements Serializable {
         return total;
     }
 
-    private int getSearchedBlogsByContentAndStatusTotal(String searchedContent, String[] searchedStatus) throws Exception {
+    private int getSearchedBlogsByContentAndStatusTotal(String searchedContent, String searchedStatus) throws Exception {
         int total = 0;
-        int length = searchedStatus.length;
-        String fSql = "select count(*) from Blog where Status in ";
-        String lSql = " and Content like ?";
-        String mSql;
-        switch (length) {
-            case 1:
-                mSql = "(?)";
-                break;
-            case 2:
-                mSql = "(?, ?)";
-                break;
-            default:
-                mSql = "(?, ?, ?)";
-                break;
-        }
-
-        String sql = fSql + mSql + lSql;
+        String sql = "select count(*) from Blog where Content like ? and Status = ?";
         preStm = conn.prepareStatement(sql);
-
-        switch (length) {
-            case 1:
-                preStm.setString(length, searchedStatus[0]);
-                break;
-            case 2:
-                preStm.setString(length - 1, searchedStatus[0]);
-                preStm.setString(length, searchedStatus[1]);
-                break;
-            default:
-                preStm.setString(length - 2, searchedStatus[0]);
-                preStm.setString(length - 1, searchedStatus[1]);
-                preStm.setString(length, searchedStatus[2]);
-                break;
-        }
-        preStm.setString(length + 1, "%" + searchedContent + "%");
-
+        preStm.setString(1, "%" + searchedContent + "%");
+        preStm.setString(2, searchedStatus);
         rs = preStm.executeQuery();
         if (rs.next()) {
             total = rs.getInt(1);
@@ -409,44 +320,13 @@ public class BlogDAO implements Serializable {
         return total;
     }
 
-    private int getSearchedBlogsByAllTotal(String searchedContent, String searchedArticle, String[] searchedStatus) throws Exception {
+    private int getSearchedBlogsByAllTotal(String searchedContent, String searchedArticle, String searchedStatus) throws Exception {
         int total = 0;
-        int length = searchedStatus.length;
-        String fSql = "select count(*) from Blog where Status in ";
-        String lSql = " and Content like ? and Title like ?";
-        String mSql;
-        switch (length) {
-            case 1:
-                mSql = "(?)";
-                break;
-            case 2:
-                mSql = "(?, ?)";
-                break;
-            default:
-                mSql = "(?, ?, ?)";
-                break;
-        }
-
-        String sql = fSql + mSql + lSql;
+        String sql = "select count(*) from Blog where Content like ? and Title like ? and Status = ?";
         preStm = conn.prepareStatement(sql);
-
-        switch (length) {
-            case 1:
-                preStm.setString(length, searchedStatus[0]);
-                break;
-            case 2:
-                preStm.setString(length - 1, searchedStatus[0]);
-                preStm.setString(length, searchedStatus[1]);
-                break;
-            default:
-                preStm.setString(length - 2, searchedStatus[0]);
-                preStm.setString(length - 1, searchedStatus[1]);
-                preStm.setString(length, searchedStatus[2]);
-                break;
-        }
-        preStm.setString(length + 1, "%" + searchedContent + "%");
-        preStm.setString(length + 2, "%" + searchedArticle + "%");
-
+        preStm.setString(1, "%" + searchedContent + "%");
+        preStm.setString(2, "%" + searchedArticle + "%");
+        preStm.setString(3, searchedStatus);
         rs = preStm.executeQuery();
         if (rs.next()) {
             total = rs.getInt(1);

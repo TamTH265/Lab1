@@ -56,15 +56,15 @@
                 <div class="form-group">
                     <div>Status</div>
                     <div class="form-check form-check-inline">
-                        <input name="searchedStatus" class="form-check-input" type="checkbox" id="new" value="new" <c:if test="${paramValues.searchedStatus[0].equals('new')}">checked="checked"</c:if> />
+                        <input name="searchedStatus" class="form-check-input" type="radio" id="new" value="new" <c:if test="${param.searchedStatus.equals('new')}">checked="checked"</c:if> />
                             <label class="form-check-label" for="new">New</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input name="searchedStatus" class="form-check-input" type="checkbox" id="activated" value="activated" <c:if test="${paramValues.searchedStatus[0].equals('activated') || paramValues.searchedStatus[1].equals('activated')}">checked="checked"</c:if> />
+                            <input name="searchedStatus" class="form-check-input" type="radio" id="activated" value="activated" <c:if test="${param.searchedStatus.equals('activated')}">checked="checked"</c:if> />
                             <label class="form-check-label" for="activated">Activated</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input name="searchedStatus" class="form-check-input" type="checkbox" id="deleted" value="deleted" <c:if test="${paramValues.searchedStatus[0].equals('deleted') || paramValues.searchedStatus[1].equals('deleted') || paramValues.searchedStatus[2].equals('deleted')}">checked="checked"</c:if> />
+                            <input name="searchedStatus" class="form-check-input" type="radio" id="deleted" value="deleted" <c:if test="${param.searchedStatus.equals('deleted')}">checked="checked"</c:if> />
                             <label class="form-check-label" for="deleted">Deleted</label>
                         </div>
                     </div>
@@ -120,9 +120,7 @@
                                 <c:param value="search" name="action" />
                                 <c:param name="searchedContent" value="${param.searchedContent}" />
                                 <c:param name="searchedArticle" value="${param.searchedArticle}" />
-                                <c:forEach items="${paramValues.searchedStatus}" var="status">
-                                    <c:param name="searchedStatus" value="${status}" />
-                                </c:forEach>
+                                <c:param name="searchedStatus" value="${param.searchedStatus}" />
                             </c:if>
                             <c:param value="${index}" name="pg" />
                         </c:url>
@@ -185,10 +183,10 @@
             </div>
         </footer>
 
-<!--        <script src="https://kit.fontawesome.com/c4b1e58fe3.js" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
+        <!--        <script src="https://kit.fontawesome.com/c4b1e58fe3.js" crossorigin="anonymous"></script>
+                <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
         <script src="./scripts/search-handling.js"></script>
     </body>
 </html>

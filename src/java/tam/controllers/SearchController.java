@@ -41,7 +41,7 @@ public class SearchController extends HttpServlet {
         HttpSession session = request.getSession(false);
         String searchedContent;
         String searchedArticle = "";
-        String[] searchedStatus = null;
+        String searchedStatus = null;
 
         String pg = request.getParameter("pg");
         int numOfBlogsPerPage = 3;
@@ -54,7 +54,8 @@ public class SearchController extends HttpServlet {
                 String role = request.getSession(false).getAttribute("ROLE").toString();
                 if (role.equals("Admin")) {
                     searchedArticle = request.getParameter("searchedArticle").trim();
-                    searchedStatus = request.getParameterValues("searchedStatus");
+                    searchedStatus = request.getParameter("searchedStatus");
+                    System.out.println(searchedStatus);
                 }
             }
 
