@@ -57,6 +57,25 @@ public class AccountDAO implements Serializable {
         return role;
     }
 
+    public boolean checkDuplicate(String email) throws Exception {
+        boolean isDuplicate = false;
+
+        try {
+            String sql = "select Email from Account where Email = ?";
+            conn = MyConnection.getMyConnection();
+            preStm = conn.prepareStatement(sql);
+            preStm.setString(1, email);
+            rs = preStm.executeQuery();
+            if (rs.next()) {
+                isDuplicate = true;
+            }
+        } finally {
+            closeConnection();
+        }
+
+        return isDuplicate;
+    }
+
     public String handleLogin(String email, String password) throws Exception {
         String role = "failed";
         try {

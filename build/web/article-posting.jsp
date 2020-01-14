@@ -35,36 +35,28 @@
                 </ul>
             </nav>
         </header>
-        
+
         <div class="container">
             <h1 class="article-post-title">What's on your mind?</h1>
             <form action="MainController" method="POST">
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" class="form-control" name="title" id="title" />
-                    <c:if test="${requestScope.BlogError.titleError != null}">
-                        <span class="error">${requestScope.BlogError.titleError}</span>
-                    </c:if>
+                    <span class="error" id="title-error"><c:if test="${requestScope.DuplicateError != null}">${requestScope.DuplicateError}</c:if></span> 
                 </div>
                 <div class="form-group">
                     <label for="shortDescription">Short Description</label>
-                    <textarea class="form-control" id="shortDescription" name="shortDescription"></textarea>
-                    <c:if test="${requestScope.BlogError.shortDescriptionError != null}">
-                        <span class="error">${requestScope.BlogError.shortDescriptionError}</span>
-                    </c:if>
+                    <textarea class="form-control" id="short-description" name="shortDescription"></textarea>
+                    <span class="error" id="short-description-error"></span>
                 </div>
                 <div class="form-group" >
                     <label for="content">Content</label>
                     <textarea class="form-control" id="content" name="content"></textarea>
-                    <c:if test="${requestScope.BlogError.contentError != null}">
-                        <span class="error">${requestScope.BlogError.contentError}</span>
-                    </c:if>
+                    <span class="error" id="content-error"></span>
                 </div>
-                <button class="submit-btn" type="submit" name="action" value="postArticle">Post</button>
+                <button id="posting-btn" class="submit-btn" type="submit" name="action" value="postArticle">Post</button>
             </form>
         </div>
-
-
 
         <footer class="container-fluid main-footer">
             <div class="row">
@@ -117,5 +109,6 @@
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <script src="./scripts/article-posting.js"></script>
     </body>
 </html>

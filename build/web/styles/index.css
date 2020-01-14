@@ -76,6 +76,13 @@ body {
     color: #21d397;
 }
 
+.content-search-form .error {
+    color: #f00;
+    position: absolute;
+    bottom: -20px;
+    font-size: 14px;
+}
+
 .blog-item {
     margin-bottom: 15px;
     border: 1px solid #ccc;

@@ -38,6 +38,6 @@
         </div>
 
         <script src="https://kit.fontawesome.com/c4b1e58fe3.js" crossorigin="anonymous"></script>
-        <script src="./scripts/login.js"></script>
+        <script src="./scripts/login-handling.js"></script>
     </body>
 </html>

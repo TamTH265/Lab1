@@ -23,8 +23,8 @@ and open the template in the editor.
 .container form {
     padding: 30px 0 0 0;
     display: flex;
-    flex-flow: column wrap;
-    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 
 .container form input {
@@ -34,6 +34,7 @@ and open the template in the editor.
     text-align: center;
     border: 1px solid #131627;
     color: #131627;
+    margin: 0 10px;
 }
 
 .container form input:focus {
@@ -45,11 +46,18 @@ and open the template in the editor.
     width: 10%;
     height: 40px;
     border: none;
-    margin-top: 20px;
+    margin: 0 10px;
     background: #131627;
     color: #fff;
 }
 
 .container form button:hover {
     color: #21d397;
+}
+
+.container form .error {
+    color: #f00;
+    position: absolute;
+    top: 75px;
+    left: 34.3%;
 }

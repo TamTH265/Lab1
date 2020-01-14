@@ -59,6 +59,25 @@ public class BlogDAO implements Serializable {
         return isSuccess;
     }
 
+    public boolean checkDuplicate(String title) throws Exception {
+        boolean isDuplicate = false;
+
+        try {
+            String sql = "select Title from Blog where Title like ?";
+            conn = MyConnection.getMyConnection();
+            preStm = conn.prepareStatement(sql);
+            preStm.setString(1, title);
+            rs = preStm.executeQuery();
+            if (rs.next()) {
+                isDuplicate = true;
+            }
+        } finally {
+            closeConnection();
+        }
+
+        return isDuplicate;
+    }
+
     public List<BlogDTO> getAllBlogs(int page, int numOfbBlogsPerPage) throws Exception {
         List<BlogDTO> blogsList = null;
 
@@ -109,7 +128,7 @@ public class BlogDAO implements Serializable {
         BlogDTO blog = null;
 
         try {
-            String sql = "select BlogID, Title, ShortDescription, Content, Author, PostedTime from Blog where BlogID = ?";
+            String sql = "select BlogID, Title, ShortDescription, Content, Author, Status, PostedTime from Blog where BlogID = ?";
             conn = MyConnection.getMyConnection();
             preStm = conn.prepareStatement(sql);
             preStm.setInt(1, id);
@@ -120,8 +139,9 @@ public class BlogDAO implements Serializable {
                 String shortDescription = rs.getString("ShortDescription");
                 String content = rs.getString("Content");
                 String author = rs.getString("Author");
+                String status = rs.getString("Status");
                 String postedTime = rs.getString("PostedTime");
-                blog = new BlogDTO(title, shortDescription, content, author, postedTime, blogID);
+                blog = new BlogDTO(title, shortDescription, content, author, postedTime, status, blogID);
             }
         } finally {
             closeConnection();

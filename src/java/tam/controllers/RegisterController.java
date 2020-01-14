@@ -39,27 +39,14 @@ public class RegisterController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            AccountDAO accountDAO = new AccountDAO();
             String email = request.getParameter("email");
             String name = request.getParameter("name");
             String password = request.getParameter("password");
-            AccountErrorObject accountErrorObj = new AccountErrorObject();
-            boolean isValid = true;
-            if (email.length() == 0) {
-                accountErrorObj.setEmailError("Email cannot be blank!");
-                isValid = false;
-            }
-            if (name.length() == 0) {
-                accountErrorObj.setNameError("Name cannot be blank!");
-                isValid = false;
-            }
-            if (password.length() == 0) {
-                accountErrorObj.setPasswordError("Password cannot be blank!");
-                isValid = false;
-            }
 
-            if (isValid) {
+            boolean isDuplicate = accountDAO.checkDuplicate(email);
+            if (!isDuplicate) {
                 HttpSession session = request.getSession();
-                AccountDAO accountDAO = new AccountDAO();
                 SHA_256 sha = new SHA_256();
                 int randomVerifyingCode = (int) (Math.random() * 900000) + 100000;
 
@@ -75,9 +62,10 @@ public class RegisterController extends HttpServlet {
                     request.setAttribute("ERROR", "Register Account Failed!");
                 }
             } else {
-                request.setAttribute("AccountError", accountErrorObj);
+                request.setAttribute("DuplicateError", "The email existed!");
                 url = INVALID;
             }
+            
         } catch (Exception e) {
             log("Error at RegisterController: " + e.getMessage());
         } finally {

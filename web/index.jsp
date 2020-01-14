@@ -46,15 +46,15 @@
                 <c:param value="loadData" name="action" />
             </c:url>
 
-
             <form action="MainController" method="POST" class="content-search-form">
                 <div>
-                    <input class="search-field" type="text" name="searchedContent" value="${param.searchedContent}" placeholder="Search content" /><button class="search-btn" type="submit" name="action" value="search"><i class="fas fa-search"></i></button>
+                    <input id="search-content" class="search-field" type="text" name="searchedContent" value="${param.searchedContent.trim()}" placeholder="Search content" /><button id="search-btn" class="search-btn" type="submit" name="action" value="search"><i class="fas fa-search"></i></button>
+                    <span class="error" id="search-error"></span>
                 </div>
                 <a class="view-all-btn" href="${viewAllBlogs}">View All</a>
             </form>
             <c:if test="${requestScope.SearchError != null}">
-                <span style="color: #f00;">${requestScope.SearchError}</span>
+                <div style="padding: 35px 0 40px 0; color: #f00; font-size: 28px; text-align: center;">${requestScope.SearchError}</div>
             </c:if>
 
             <c:if test="${requestScope.BlogsData != null}">
@@ -145,9 +145,10 @@
             </div>
         </footer>
 
-        <script src="https://kit.fontawesome.com/c4b1e58fe3.js" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+        <!--        <script src="https://kit.fontawesome.com/c4b1e58fe3.js" crossorigin="anonymous"></script>
+                <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
+        <script src="./scripts/search-handling.js"></script>
     </body>
 </html>

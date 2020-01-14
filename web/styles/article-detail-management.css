@@ -17,6 +17,7 @@ and open the template in the editor.
 
 .container .blog-container {
     padding: 30px 0 0 0;
+    position: relative;
 }
 
 .container .blog-container .blog-title {
@@ -40,6 +41,13 @@ and open the template in the editor.
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     padding: 20px 0;
+}
+
+.container .blog-container .blog-status {
+    position: absolute;
+    right: 0;
+    top: 70px;
+    font-size: 24px;
 }
 
 .container .blog-container .form-container {

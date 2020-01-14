@@ -43,6 +43,7 @@
                 <div class="blog-annotation">
                     Posted by <span class="blog-author">${BlogDetail.author}</span> at <span class="blog-posted-time">${BlogDetail.postedTime}</span>
                 </div>
+                <div class="blog-status"><span>Status: </span>${BlogDetail.status}</div>
                 <div class="short-description">${BlogDetail.shortDescription}</div>
                 <div class="blog-content">${BlogDetail.content}</div>
 
@@ -50,12 +51,16 @@
                     <c:param name="blogID" value="${BlogDetail.blogID}" />
                 </c:url>
                 <div class="form-container">
-                    <form action="${articleDetailManage}" method="POST">
-                        <button style="background-color: #46c922;" type="submit" name="action" value="approveArticle">Approve</button>
-                    </form>
-                    <form action="${articleDetailManage}" method="POST">
-                        <button style="background-color: #f40c0c;" type="submit" name="action" value="deleteArticle">Delete</button>
-                    </form>
+                    <c:if test="${BlogDetail.status eq 'New'}">
+                        <form action="${articleDetailManage}" method="POST">
+                            <button style="background-color: #46c922;" type="submit" name="action" value="approveArticle">Approve</button>
+                        </form>
+                    </c:if>
+                    <c:if test="${BlogDetail.status eq 'New' || BlogDetail.status eq 'Activated'}">
+                        <form action="${articleDetailManage}" method="POST">
+                            <button style="background-color: #f40c0c;" type="submit" name="action" value="deleteArticle">Delete</button>
+                        </form>
+                    </c:if>
                 </div>
             </div>
         </div>        

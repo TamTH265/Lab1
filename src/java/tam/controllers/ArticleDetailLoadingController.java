@@ -55,14 +55,15 @@ public class ArticleDetailLoadingController extends HttpServlet {
                     if (role.equals("Admin")) {
                         url = ARTICLEDETAILMANAGEMENT;
                     } else {
+                        request.setAttribute("CommentsData", commentsData);
                         url = ARTICLEDETAIL;
                     }
                 } else {
+                    request.setAttribute("CommentsData", commentsData);
                     url = ARTICLEDETAIL;
                 }
                 blogDetail.setBlogID(blogID);
                 request.setAttribute("BlogDetail", blogDetail);
-                request.setAttribute("CommentsData", commentsData);
             } else {
                 url = ERROR;
                 request.setAttribute("ERROR", "Loading Blog Detail Failed!");

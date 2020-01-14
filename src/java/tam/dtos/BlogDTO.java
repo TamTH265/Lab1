@@ -49,6 +49,16 @@ public class BlogDTO {
         this.blogID = blogID;
     }
 
+    public BlogDTO(String title, String shortDescription, String content, String author, String postedTime, String status, int blogID) {
+        this.title = title;
+        this.shortDescription = shortDescription;
+        this.content = content;
+        this.author = author;
+        this.postedTime = postedTime;
+        this.status = status;
+        this.blogID = blogID;
+    }
+
     public int getBlogID() {
         return blogID;
     }

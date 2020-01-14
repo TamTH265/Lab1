@@ -29,7 +29,8 @@ public class CommentPostingController extends HttpServlet {
     private static final String INVALID = "article-detail.jsp";
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -37,7 +38,7 @@ public class CommentPostingController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
@@ -51,34 +52,17 @@ public class CommentPostingController extends HttpServlet {
             String postedTime = request.getParameter("postedTime");
             CommentDAO commentDAO = new CommentDAO();
 
-            CommentErrorObject commentErrorObj = new CommentErrorObject();
-            boolean isValid = true;
-            if (comment.length() == 0) {
-                commentErrorObj.setContentError("Comment cannot be blank!");
-                isValid = false;
-            }
-
-            if (isValid) {
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                LocalDateTime now = LocalDateTime.now();
-                if (commentDAO.postComment(email, blogID, comment, dtf.format(now))) {
-                    BlogDTO blogDetail = new BlogDTO(title, shortDescription, content, author, postedTime, blogID);
-                    request.setAttribute("BlogDetail", blogDetail);
-
-                    List<CommentDTO> commentsData = commentDAO.getAllCommentsByBlogID(blogID);
-                    request.setAttribute("CommentsData", commentsData);
-                    url = SUCCESS;
-                } else {
-                    request.setAttribute("ERROR", "Posting Comment Failed!");
-                }
-            } else {
-                request.setAttribute("CommentError", commentErrorObj);
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+            if (commentDAO.postComment(email, blogID, comment, dtf.format(now))) {
                 BlogDTO blogDetail = new BlogDTO(title, shortDescription, content, author, postedTime, blogID);
                 request.setAttribute("BlogDetail", blogDetail);
-                
+
                 List<CommentDTO> commentsData = commentDAO.getAllCommentsByBlogID(blogID);
                 request.setAttribute("CommentsData", commentsData);
-                url = INVALID;
+                url = SUCCESS;
+            } else {
+                request.setAttribute("ERROR", "Posting Comment Failed!");
             }
         } catch (Exception e) {
             log("ERROR at CommentPostingController: " + e.getMessage());
@@ -98,7 +82,7 @@ public class CommentPostingController extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 
@@ -112,7 +96,7 @@ public class CommentPostingController extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
+            throws ServletException, IOException {
         processRequest(request, response);
     }
 

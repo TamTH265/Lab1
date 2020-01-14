@@ -66,7 +66,7 @@ and open the template in the editor.
     width: 150px;
     margin: 0 10px;
     border-radius: 999px;
-    background: #131627;
+    background: rgba(19, 22, 39, 0.8);
     color: #fff;
 }
 .container .blog-container form .comment-btn:hover {

@@ -50,33 +50,29 @@ public class SearchController extends HttpServlet {
         try {
             searchedContent = request.getParameter("searchedContent").trim();
 
-            if (!searchedContent.equals("")) {
-                if (session.getAttribute("ROLE") != null) {
-                    String role = request.getSession(false).getAttribute("ROLE").toString();
-                    if (role.equals("Admin")) {
-                        searchedArticle = request.getParameter("searchedArticle").trim();
-                        searchedStatus = request.getParameterValues("searchedStatus");
-                    }
+            if (session.getAttribute("ROLE") != null) {
+                String role = request.getSession(false).getAttribute("ROLE").toString();
+                if (role.equals("Admin")) {
+                    searchedArticle = request.getParameter("searchedArticle").trim();
+                    searchedStatus = request.getParameterValues("searchedStatus");
                 }
-                
-                BlogDAO blogDAO = new BlogDAO();
-                PagingHandler pagingHandler = new PagingHandler();
-                int blogsTotal = blogDAO.getSearchedBlogsTotal(searchedContent, searchedArticle, searchedStatus);
+            }
 
-                if (blogsTotal > 0) {
-                    int totalPage = pagingHandler.getTotalPage(pg, blogsTotal, numOfBlogsPerPage);
-                    int page = pagingHandler.getPage(pg);
-                    if (page > 0 && page <= totalPage) {
-                        List<BlogDTO> blogsData = blogDAO.getSearchedBlogsData(searchedContent, searchedArticle, searchedStatus, page, numOfBlogsPerPage);
+            BlogDAO blogDAO = new BlogDAO();
+            PagingHandler pagingHandler = new PagingHandler();
+            int blogsTotal = blogDAO.getSearchedBlogsTotal(searchedContent, searchedArticle, searchedStatus);
 
-                        request.setAttribute("BlogsData", blogsData);
-                        request.setAttribute("TotalPage", totalPage);
-                    }
-                } else {
-                    request.setAttribute("SearchError", "There isn't any results!");
+            if (blogsTotal > 0) {
+                int totalPage = pagingHandler.getTotalPage(pg, blogsTotal, numOfBlogsPerPage);
+                int page = pagingHandler.getPage(pg);
+                if (page > 0 && page <= totalPage) {
+                    List<BlogDTO> blogsData = blogDAO.getSearchedBlogsData(searchedContent, searchedArticle, searchedStatus, page, numOfBlogsPerPage);
+
+                    request.setAttribute("BlogsData", blogsData);
+                    request.setAttribute("TotalPage", totalPage);
                 }
             } else {
-                request.setAttribute("SearchError", "Content is required to search!");
+                request.setAttribute("SearchError", "No Record Could Be Found!");
             }
 
             url = INDEX;

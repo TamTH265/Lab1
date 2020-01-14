@@ -16,42 +16,32 @@
     </head>
     <body>
         <div class="signup-form-container">
-            <form action="MainController" method="POST">
+            <form id="register-form" action="MainController" method="POST">
                 <h3>Sign Up</h3>
                 <div class="form-item">
                     <label for="email">Email</label>
-                    <input type="text" name="email" value="${param.email}" id="email" />
-                    <c:if test="${requestScope.AccountError.emailError != NULL}">
-                        <span class="error">${requestScope.AccountError.emailError}</span>
-                    </c:if>
-                </div>
-                <div class="form-item">
-                    <label for="name">User Name</label>
-                    <input type="text" name="name" value="${param.name}" id="name" />
-                    <c:if test="${requestScope.AccountError.nameError != NULL}">
-                        <span class="error">${requestScope.AccountError.nameError}</span>
-                    </c:if>
+                    <input id="email" type="text" name="email" value="${param.email}" />
+                    <span class="error" id="email-error"><c:if test="${requestScope.DuplicateError != NULL}">${requestScope.DuplicateError} </c:if></span>
+                    </div>
+                    <div class="form-item">
+                        <label for="name">User Name</label>
+                        <input id="username" type="text" name="name" value="${param.name}" />
+                    <span class="error" id="username-error"></span>
                 </div>
                 <div class="form-item">
                     <label for="password">Password</label>
-                    <input type="password" name="password" id="password" />
-                    <c:if test="${requestScope.AccountError.passwordError != NULL}">
-                        <span class="error">${requestScope.AccountError.passwordError}</span>
-                    </c:if>
+                    <input id="password" type="password" name="password" />
+                    <span class="error" id="password-error"></span>
                 </div>
                 <div class="form-item">
                     <label for="password-confirm">Confirm Password</label>
-                    <input type="password" name="passwordConfirm" id="password-confirm" />
+                    <input id="password-confirm" type="password" name="passwordConfirm" />
+                    <span class="error" id="password-confirm-error"></span>
                 </div>
-                <div class="terms-confirm">
-                    <label for="terms-confirm" class="checkbox-container">
-                        <input type="checkbox" id="terms-confirm" name="cbxTermsConfirm">
-                        <span class="checkmark"></span>
-                        I agree to the <a href="#">Terms of User</a>
-                    </label>
-                </div>
-                <button type="submit" name="action" value="register">Sign Up</button>
+                <button id="register-btn" type="submit" name="action" value="register">Sign Up</button>
             </form>
         </div>
+
+        <script src="./scripts/register-handling.js"></script>
     </body>
 </html>

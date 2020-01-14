@@ -12,6 +12,10 @@ and open the template in the editor.
     padding: 0;
 }
 
+input:focus {
+    outline: none;
+}
+
 .container-fluid {
     padding: 0;
 }

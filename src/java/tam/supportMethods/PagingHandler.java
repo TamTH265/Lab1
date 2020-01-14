@@ -5,10 +5,6 @@
  */
 package tam.supportMethods;
 
-import java.util.List;
-import tam.daos.BlogDAO;
-import tam.dtos.BlogDTO;
-
 /**
  *
  * @author hoang

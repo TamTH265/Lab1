@@ -54,6 +54,10 @@ and open the template in the editor.
     position: relative;
 }
 
+.container form .form-group {
+    margin-bottom: 25px;
+}
+
 .container form button[type='submit'] {
     border: none;
     height: 40px;
@@ -83,5 +87,11 @@ and open the template in the editor.
 
 .container form a:hover {
     color: #21d397;
+}
+
+.container form .error {
+    color: #f00;
+    position: absolute;
+    font-size: 14px;
 }
 

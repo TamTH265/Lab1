@@ -49,7 +49,7 @@ public class AccountActivatingController extends HttpServlet {
                     request.setAttribute("ERROR", "Activating Account Failed!");
                 }
             } else {
-                request.setAttribute("VERIFYINGERROR", "Invalid Verifying Code");
+                request.setAttribute("VerifyingError", "Verifying Code is INVALID");
                 url = FAILED;
             }
         } catch (Exception e) {
