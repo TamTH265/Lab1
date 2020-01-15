@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import tam.daos.CommentDAO;
 import tam.dtos.BlogDTO;
 import tam.dtos.CommentDTO;
-import tam.dtos.CommentErrorObject;
 
 /**
  *

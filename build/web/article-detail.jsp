@@ -23,12 +23,19 @@
                     <a href="index.jsp"><img src="./images/logo.png" alt=""></a>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="index.jsp">Home</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><button><a href="login.jsp">Sign In</a></button></li>
-                    <li><button><a href="register.jsp">Sign Up</a></button></li>
+                    <li><a href="
+                           <c:if test="${sessionScope.ROLE ne 'Admin'}">index.jsp</c:if>
+                           <c:if test="${sessionScope.ROLE eq 'Admin'}">admin.jsp</c:if>
+                               ">Home</a></li>
+                    <c:if test="${sessionScope.ROLE eq 'Member'}"><li><a href="article-posting.jsp">Blog Posting</a></li></c:if>
+                        <c:if test="${sessionScope.ROLE ne 'Member' && sessionScope.ROLE ne 'Admin'}">
+                        <li><button><a class="header-btn" href="login.jsp">Sign In</a></li>
+                        <li><button><a class="header-btn" href="register.jsp">Sign Up</a></li>
+                                </c:if>
+                                <c:if test="${sessionScope.ROLE eq 'Member' || sessionScope.ROLE eq 'Admin'}">
+                        <li><a href="#">Hello, ${sessionScope.NAME}!</a></li>
+                        <li><button><a class="header-btn" href="LogoutController">Sign Out</a></button></li>
+                        </c:if>
                 </ul>
             </nav>
         </header>
@@ -42,13 +49,18 @@
                         Posted by <span class="blog-author">${BlogDetail.author}</span> at <span class="blog-posted-time">${BlogDetail.postedTime}</span>
                     </div>
                     <div class="blog-content">${BlogDetail.content}</div>
-                    <c:url value="MainController" var="postComment">
-                        <c:param value="${BlogDetail.title}" name="title" />
-                        <c:param value="${BlogDetail.content}" name="content" />
-                        <c:param value="${BlogDetail.author}" name="author" />
-                        <c:param value="${BlogDetail.postedTime}" name="postedTime" />
-                        <c:param value="${BlogDetail.blogID}" name="blogID" />
-                    </c:url>
+                    <c:if test="${sessionScope.ROLE eq 'Member'}">
+                        <c:url value="MainController" var="postComment">
+                            <c:param value="${BlogDetail.title}" name="title" />
+                            <c:param value="${BlogDetail.content}" name="content" />
+                            <c:param value="${BlogDetail.author}" name="author" />
+                            <c:param value="${BlogDetail.postedTime}" name="postedTime" />
+                            <c:param value="${BlogDetail.blogID}" name="blogID" />
+                        </c:url>
+                    </c:if>
+                    <c:if test="${sessionScope.ROLE ne 'Member'}">
+                        <c:url value="login.jsp" var="postComment"></c:url>
+                    </c:if>
                     <form action="${postComment}" method="POST">
                         <input id="comment-posting" type="text" class="comment-posting" name="comment" placeholder="Add a comment..."/>
                         <button disabled="disabled" id="posting-btn" class="comment-btn" type="submit" name="action" value="postComment">Add Comment</button>
