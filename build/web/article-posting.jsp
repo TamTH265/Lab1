@@ -38,7 +38,7 @@
                                 <c:if test="${sessionScope.ROLE eq 'Member' || sessionScope.ROLE eq 'Admin'}">
                         <li><a href="#">Hello, ${sessionScope.NAME}!</a></li>
                         <li><button><a class="header-btn" href="LogoutController">Sign Out</a></button></li>
-                        </c:if>
+                                </c:if>
                 </ul>
             </nav>
         </header>
@@ -48,17 +48,17 @@
             <form action="MainController" method="POST">
                 <div class="form-group">
                     <label for="title">Title</label>
-                    <input type="text" class="form-control" name="title" id="title" />
+                    <input type="text" class="form-control" name="title" id="title" value="${param.title}" />
                     <span class="error" id="title-error"><c:if test="${requestScope.DuplicateError != null}">${requestScope.DuplicateError}</c:if></span> 
-                </div>
-                <div class="form-group">
-                    <label for="shortDescription">Short Description</label>
-                    <textarea class="form-control" id="short-description" name="shortDescription"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="shortDescription">Short Description</label>
+                        <textarea style="white-space: pre-wrap;" class="form-control" id="short-description" name="shortDescription">${param.shortDescription}</textarea>
                     <span class="error" id="short-description-error"></span>
                 </div>
                 <div class="form-group" >
                     <label for="content">Content</label>
-                    <textarea class="form-control" id="content" name="content"></textarea>
+                    <textarea style="white-space: pre-wrap;" class="form-control" id="content" name="content">${param.content}</textarea>
                     <span class="error" id="content-error"></span>
                 </div>
                 <button id="posting-btn" class="submit-btn" type="submit" name="action" value="postArticle">Post</button>

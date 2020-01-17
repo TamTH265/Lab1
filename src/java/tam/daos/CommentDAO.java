@@ -8,6 +8,8 @@ package tam.daos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import tam.db.MyConnection;
@@ -38,7 +40,7 @@ public class CommentDAO {
         }
     }
 
-    public boolean postComment(String memberEmail, int blogID, String content, String commentTime) throws Exception {
+    public boolean postComment(String memberEmail, int blogID, String content, Timestamp commentTime) throws Exception {
         boolean isSuccess = false;
 
         try {
@@ -48,7 +50,7 @@ public class CommentDAO {
             preStm.setString(1, memberEmail);
             preStm.setInt(2, blogID);
             preStm.setString(3, content);
-            preStm.setString(4, commentTime);
+            preStm.setTimestamp(4, commentTime);
             isSuccess = preStm.executeUpdate() > 0;
         } finally {
             closeConnection();
@@ -68,17 +70,18 @@ public class CommentDAO {
             rs = preStm.executeQuery();
             commentsList = new ArrayList<>();
             while (rs.next()) {
-               String userName = rs.getString(1); 
-               String content = rs.getString(2); 
-               String commentTime = rs.getString(3); 
+                String userName = rs.getString(1);
+                String content = rs.getString(2);
+                Timestamp commentTime = rs.getTimestamp(3);
+                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 
-               CommentDTO comment = new CommentDTO(content, commentTime, userName);
-               commentsList.add(comment);
+                CommentDTO comment = new CommentDTO(content, sdf.format(commentTime), userName);
+                commentsList.add(comment);
             }
         } finally {
             closeConnection();
         }
-        
+
         return commentsList;
     }
 }

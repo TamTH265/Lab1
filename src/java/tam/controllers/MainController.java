@@ -76,6 +76,9 @@ public class MainController extends HttpServlet {
                 case "deleteArticle":
                     url = ARTICLEDETAILMANAGEMENT;
                     break;
+                case "restoreArticle":
+                    url = ARTICLEDETAILMANAGEMENT;
+                    break;
                 case "verify":
                     url = ACCOUNTACTIVATING;
                     break;

@@ -12,7 +12,11 @@ import java.io.Serializable;
  * @author hoang
  */
 public class AccountDTO implements Serializable {
+
     private String email, name, password;
+
+    public AccountDTO() {
+    }
 
     public AccountDTO(String email, String name, String password) {
         this.email = email;

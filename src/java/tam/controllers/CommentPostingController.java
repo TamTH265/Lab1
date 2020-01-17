@@ -6,8 +6,9 @@
 package tam.controllers;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +26,6 @@ public class CommentPostingController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
     private static final String SUCCESS = "article-detail.jsp";
-    private static final String INVALID = "article-detail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,10 +51,9 @@ public class CommentPostingController extends HttpServlet {
             String postedTime = request.getParameter("postedTime");
             CommentDAO commentDAO = new CommentDAO();
 
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime now = LocalDateTime.now();
-            if (commentDAO.postComment(email, blogID, comment, dtf.format(now))) {
-                BlogDTO blogDetail = new BlogDTO(title, shortDescription, content, author, postedTime, blogID);
+            Timestamp commentTime = new Timestamp(System.currentTimeMillis());
+            if (commentDAO.postComment(email, blogID, comment, commentTime)) {
+                BlogDTO blogDetail = new BlogDTO(title, shortDescription, content, author, postedTime, null, blogID);
                 request.setAttribute("BlogDetail", blogDetail);
 
                 List<CommentDTO> commentsData = commentDAO.getAllCommentsByBlogID(blogID);

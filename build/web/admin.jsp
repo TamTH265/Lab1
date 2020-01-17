@@ -47,34 +47,49 @@
                                 <c:if test="${sessionScope.ROLE eq 'Member' || sessionScope.ROLE eq 'Admin'}">
                         <li><a href="#">Hello, ${sessionScope.NAME}!</a></li>
                         <li><button><a class="header-btn" href="LogoutController">Sign Out</a></button></li>
-                        </c:if>
+                                </c:if>
                 </ul>
             </nav>
         </header>
 
         <div class="container">
             <form action="MainController" method="POST">
-                <div class="form-group">
-                    <label for="content">Content(REQUIRED)</label>
-                    <input id="search-content" name="searchedContent" value="${param.searchedContent}" type="text" class="form-control" placeholder="Input Content..." />
-                    <span class="error" id="search-error"></span>
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="content">Content(REQUIRED)</label>
+                        <input id="search-content" name="searchedContent" value="${param.searchedContent}" type="text" class="form-control" placeholder="Input Content..." />
+                        <span class="error" id="search-error"></span>
+                    </div>
+                    <div class="form-group col-md-3 ml-auto">
+                        <label>Filter Supporter</label>
+                        <div>
+                            <div class="form-check form-check-inline">
+                                <input name="articleFilter" <c:if test="${param.articleFilter != null}">checked="checked"</c:if> class="form-check-input" type="checkbox" id="article-filter" />
+                                    <label class="form-check-label" for="article-filter">By Article</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input name="statusFilter" <c:if test="${param.statusFilter != null}">checked="checked"</c:if> class="form-check-input" type="checkbox" id="status-filter" />
+                                    <label class="form-check-label" for="status-filter">By Status</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="article-filter-container" style="display: none;">
+                        <label for="article">Article</label>
+                        <input name="searchedArticle" value="${param.searchedArticle}" type="text" class="form-control" id="article" placeholder="Input Article..." />
                 </div>
-                <div class="form-group">
-                    <label for="article">Article</label>
-                    <input name="searchedArticle" value="${param.searchedArticle}" type="text" class="form-control" id="article" placeholder="Input Article..." />
-                </div>
-                <div class="form-group">
+                <div class="form-group" id="status-filter-container" style="display: none;">
                     <div>Status</div>
                     <div class="form-check form-check-inline">
-                        <input name="searchedStatus" class="form-check-input" type="radio" id="new" value="new" <c:if test="${param.searchedStatus.equals('new')}">checked="checked"</c:if> />
+                        <input name="searchedStatus" class="form-check-input st" type="radio" id="new" value="new" <c:if test="${param.searchedStatus.equals('new')}">checked="checked"</c:if> />
                             <label class="form-check-label" for="new">New</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input name="searchedStatus" class="form-check-input" type="radio" id="activated" value="activated" <c:if test="${param.searchedStatus.equals('activated')}">checked="checked"</c:if> />
+                            <input name="searchedStatus" class="form-check-input st" type="radio" id="activated" value="activated" <c:if test="${param.searchedStatus.equals('activated')}">checked="checked"</c:if> />
                             <label class="form-check-label" for="activated">Activated</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input name="searchedStatus" class="form-check-input" type="radio" id="deleted" value="deleted" <c:if test="${param.searchedStatus.equals('deleted')}">checked="checked"</c:if> />
+                            <input name="searchedStatus" class="form-check-input st" type="radio" id="deleted" value="deleted" <c:if test="${param.searchedStatus.equals('deleted')}">checked="checked"</c:if> />
                             <label class="form-check-label" for="deleted">Deleted</label>
                         </div>
                     </div>
@@ -98,6 +113,7 @@
                             <th scope="col">Posted Time</th>
                             <th scope="col">Status</th>
                             <th scope="col">Detail</th>
+                            <th scope="col">Tick</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,6 +131,11 @@
                                     </c:url>
                                     <a href="${handleBlogDetail}">View</a>
                                 </td>
+                                <td style="text-align: center;">
+                                    <form action="MainController" method="POST" style="text-align: center; display: inline;">
+                                        <input type="checkbox" name="tick" />
+                                    </form>
+                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -129,8 +150,17 @@
                             <c:if test="${param.searchedContent != null}">
                                 <c:param value="search" name="action" />
                                 <c:param name="searchedContent" value="${param.searchedContent}" />
-                                <c:param name="searchedArticle" value="${param.searchedArticle}" />
-                                <c:param name="searchedStatus" value="${param.searchedStatus}" />
+                                <c:if test="${param.searchedArticle eq ''}">
+                                    <c:param name="searchedArticle" value="${param.searchedArticle}" />
+                                </c:if>
+                                <c:if test="${param.searchedArticle ne ''}">
+                                    <c:param name="searchedArticle" value="${param.searchedArticle}" />
+                                    <c:param name="articleFilter" value="${param.articleFilter}" />
+                                </c:if>
+                                <c:if test="${param.searchedStatus != null}">
+                                    <c:param name="searchedStatus" value="${param.searchedStatus}" />
+                                    <c:param name="statusFilter" value="${param.statusFilter}" />
+                                </c:if>
                             </c:if>
                             <c:param value="${index}" name="pg" />
                         </c:url>
@@ -198,5 +228,43 @@
                 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
         <script src="./scripts/search-handling.js"></script>
+        <script>
+            const articleFilter = document.getElementById('article-filter')
+            const statusFilter = document.getElementById('status-filter')
+            const articleFilterContainer = document.getElementById('article-filter-container')
+            const statusFilterContainer = document.getElementById('status-filter-container')
+            const article = document.getElementById('article')
+            const st = document.getElementsByClassName('st')
+
+            if (${param.articleFilter != null}) {
+                articleFilterContainer.style.display = 'block'
+            } else {
+                articleFilterContainer.style.display = 'none'
+            }
+            if (${param.statusFilter != null}) {
+                statusFilterContainer.style.display = 'block'
+            } else {
+                statusFilterContainer.style.display = 'none'
+            }
+
+            articleFilter.addEventListener('click', () => {
+                if (articleFilter.checked) {
+                    articleFilterContainer.style.display = 'block'
+                } else {
+                    articleFilterContainer.style.display = 'none'
+                    article.value = ''
+                }
+            })
+            statusFilter.addEventListener('click', () => {
+                if (statusFilter.checked) {
+                    statusFilterContainer.style.display = 'block'
+                } else {
+                    statusFilterContainer.style.display = 'none'
+                    for (let i = 0; i < st.length; i++) {
+                        st[i].checked = false
+                    }
+                }
+            })
+        </script>
     </body>
 </html>

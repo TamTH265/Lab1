@@ -55,10 +55,10 @@ public class SearchController extends HttpServlet {
                 if (role.equals("Admin")) {
                     searchedArticle = request.getParameter("searchedArticle").trim();
                     searchedStatus = request.getParameter("searchedStatus");
-                    System.out.println(searchedStatus);
                 }
             }
-
+            System.out.println(searchedArticle);
+            System.out.println(searchedStatus);
             BlogDAO blogDAO = new BlogDAO();
             PagingHandler pagingHandler = new PagingHandler();
             int blogsTotal = blogDAO.getSearchedBlogsTotal(searchedContent, searchedArticle, searchedStatus);

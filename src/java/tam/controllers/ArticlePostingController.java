@@ -6,8 +6,7 @@
 package tam.controllers;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.sql.Timestamp;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,9 +44,10 @@ public class ArticlePostingController extends HttpServlet {
             String content = request.getParameter("content");
 
             if (!blogDAO.checkDuplicate(title)) {
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-                LocalDateTime now = LocalDateTime.now();
-                if (blogDAO.postArticle(email, title, shortDescription, content, dtf.format(now))) {
+                Timestamp postedTime = new Timestamp(System.currentTimeMillis());
+                shortDescription = shortDescription.replace("\n", "<br /><br />");
+                content = content.replace("\n", "<br /><br />");
+                if (blogDAO.postArticle(email, title, shortDescription, content, postedTime)) {
                     url = SUCCESS;
                 } else {
                     request.setAttribute("ERROR", "Posting Article Failed!");

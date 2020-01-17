@@ -5,15 +5,18 @@
  */
 package tam.dtos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author hoang
  */
-public class CommentDTO {
-    private String memberEmail, content, commentTime, userName;
+public class CommentDTO implements Serializable {
+
+    private String memberEmail, content, userName, commentTime;
     private int blogID;
-    
-    public CommentDTO(){
+
+    public CommentDTO() {
     }
 
     public CommentDTO(String content, String commentTime, String userName) {
@@ -21,7 +24,7 @@ public class CommentDTO {
         this.commentTime = commentTime;
         this.userName = userName;
     }
-
+    
     public String getMemberEmail() {
         return memberEmail;
     }

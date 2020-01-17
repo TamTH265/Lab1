@@ -5,13 +5,15 @@
  */
 package tam.dtos;
 
+import java.io.Serializable;
+
 /**
  *
  * @author hoang
  */
-public class BlogDTO {
+public class BlogDTO implements Serializable {
 
-    private String title, shortDescription, content, author, postedTime, status;
+    private String title, shortDescription, content, author, status, postedTime;
     private int blogID;
 
     public BlogDTO() {
@@ -23,30 +25,12 @@ public class BlogDTO {
         this.content = content;
     }
 
-    public BlogDTO(int blogID, String author, String title, String shortDescription, String postedTime, String status) {
-        this.blogID = blogID;
-        this.title = title;
-        this.postedTime = postedTime;
-        this.shortDescription = shortDescription;
-        this.author = author;
-        this.status = status;
-    }
-
     public BlogDTO(String title, String shortDescription, String content, String author, String postedTime) {
         this.title = title;
         this.shortDescription = shortDescription;
         this.content = content;
         this.author = author;
         this.postedTime = postedTime;
-    }
-
-    public BlogDTO(String title, String shortDescription, String content, String author, String postedTime, int blogID) {
-        this.title = title;
-        this.shortDescription = shortDescription;
-        this.content = content;
-        this.author = author;
-        this.postedTime = postedTime;
-        this.blogID = blogID;
     }
 
     public BlogDTO(String title, String shortDescription, String content, String author, String postedTime, String status, int blogID) {
@@ -97,14 +81,6 @@ public class BlogDTO {
 
     public void setAuthor(String author) {
         this.author = author;
-    }
-
-    public String getPostedDate() {
-        return postedTime;
-    }
-
-    public void setPostedDate(String postedDate) {
-        this.postedTime = postedDate;
     }
 
     public String getStatus() {

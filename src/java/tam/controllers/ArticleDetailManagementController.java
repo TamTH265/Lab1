@@ -43,11 +43,17 @@ public class ArticleDetailManagementController extends HttpServlet {
                 } else {
                     request.setAttribute("ERROR", "Approving Article Failed!");
                 }
-            } else {
+            } else if (action.equals("deleteArticle")) {
                 if (blogDAO.deleteArticle(blogID)) {
                     url = SUCCESS;
                 } else {
                     request.setAttribute("ERROR", "Deleting Article Failed!");
+                }
+            } else {
+                if (blogDAO.restoreArticle(blogID)) {
+                    url = SUCCESS;
+                } else {
+                    request.setAttribute("ERROR", "Restoring Article Failed!");
                 }
             }
         } catch (Exception e) {

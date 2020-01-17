@@ -17,7 +17,6 @@ and open the template in the editor.
 
 .container .blog-container {
     padding: 30px 0 0 0;
-    position: relative;
 }
 
 .container .blog-container .blog-title {
@@ -30,6 +29,7 @@ and open the template in the editor.
     font-size: 14px;
     padding: 5px 0 10px 0;
     color: #888;
+    position: relative;
 }
 
 .container .blog-container .short-description {
@@ -43,11 +43,12 @@ and open the template in the editor.
     padding: 20px 0;
 }
 
-.container .blog-container .blog-status {
+.container .blog-container .blog-annotation .blog-status {
     position: absolute;
     right: 0;
-    top: 70px;
+    bottom: 8px;
     font-size: 24px;
+    color: #888;
 }
 
 .container .blog-container .form-container {
@@ -57,7 +58,7 @@ and open the template in the editor.
 }
 
 .container .blog-container .form-container form {
-    margin: 0 10px;
+    margin: 0 20px;
 }
 
 .container .blog-container .form-container form button[type='submit'] {
@@ -65,5 +66,10 @@ and open the template in the editor.
     padding: 0 30px;
     border: none;
     color: #fff;
+    background: #131627;
+}
+
+.container .blog-container .form-container form button[type='submit']:hover {
+    color: #21d397;
 }
 

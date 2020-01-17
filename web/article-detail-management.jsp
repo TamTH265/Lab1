@@ -51,8 +51,8 @@
                 <h1 class="blog-title">${BlogDetail.title}</h1>
                 <div class="blog-annotation">
                     Posted by <span class="blog-author">${BlogDetail.author}</span> at <span class="blog-posted-time">${BlogDetail.postedTime}</span>
+                    <div class="blog-status"><span>Status: </span>${BlogDetail.status}</div>
                 </div>
-                <div class="blog-status"><span>Status: </span>${BlogDetail.status}</div>
                 <div class="short-description">${BlogDetail.shortDescription}</div>
                 <div class="blog-content">${BlogDetail.content}</div>
 
@@ -62,12 +62,17 @@
                 <div class="form-container">
                     <c:if test="${BlogDetail.status eq 'New'}">
                         <form action="${articleDetailManage}" method="POST">
-                            <button style="background-color: #46c922;" type="submit" name="action" value="approveArticle">Approve</button>
+                            <button type="submit" name="action" value="approveArticle">Approve</button>
                         </form>
                     </c:if>
                     <c:if test="${BlogDetail.status eq 'New' || BlogDetail.status eq 'Activated'}">
                         <form action="${articleDetailManage}" method="POST">
-                            <button style="background-color: #f40c0c;" type="submit" name="action" value="deleteArticle">Delete</button>
+                            <button type="submit" name="action" value="deleteArticle">Delete</button>
+                        </form>
+                    </c:if>
+                    <c:if test="${BlogDetail.status eq 'Deleted'}">
+                        <form action="${articleDetailManage}" method="POST">
+                            <button type="submit" name="action" value="restoreArticle">Restore</button>
                         </form>
                     </c:if>
                 </div>
