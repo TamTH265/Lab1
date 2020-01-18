@@ -28,6 +28,7 @@ public class MainController extends HttpServlet {
     private static final String COMMENTPOSTING = "CommentPostingController";
     private static final String ARTICLEDETAILMANAGEMENT = "ArticleDetailManagementController";
     private static final String ACCOUNTACTIVATING = "AccountActivatingController";
+    private static final String ARTICLESDELETING = "ArticlesDeletingController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -81,6 +82,9 @@ public class MainController extends HttpServlet {
                     break;
                 case "verify":
                     url = ACCOUNTACTIVATING;
+                    break;
+                case "deleteArticles":
+                    url = ARTICLESDELETING;
                     break;
                 default:
                     request.setAttribute("ERROR", "Your action is invalid");

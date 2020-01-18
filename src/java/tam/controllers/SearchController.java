@@ -44,7 +44,7 @@ public class SearchController extends HttpServlet {
         String searchedStatus = null;
 
         String pg = request.getParameter("pg");
-        int numOfBlogsPerPage = 3;
+        int numOfBlogsPerPage = 20;
         String url = ERROR;
 
         try {
@@ -57,8 +57,6 @@ public class SearchController extends HttpServlet {
                     searchedStatus = request.getParameter("searchedStatus");
                 }
             }
-            System.out.println(searchedArticle);
-            System.out.println(searchedStatus);
             BlogDAO blogDAO = new BlogDAO();
             PagingHandler pagingHandler = new PagingHandler();
             int blogsTotal = blogDAO.getSearchedBlogsTotal(searchedContent, searchedArticle, searchedStatus);

@@ -49,16 +49,16 @@ and open the template in the editor.
     color: #21d397;
 }
 
-.container form {
+.container .search-form {
     margin-bottom: 30px;
     position: relative;
 }
 
-.container form .form-group {
+.container .search-form .form-group {
     margin-bottom: 25px;
 }
 
-.container form button[type='submit'] {
+.container .search-form button[type='submit'] {
     border: none;
     height: 40px;
     width: 100px;
@@ -67,11 +67,11 @@ and open the template in the editor.
     transition: all 0.2s;
 }
 
-.container form button[type='submit']:hover {
+.container .search-form button[type='submit']:hover {
     color: #21d397;
 }
 
-.container form a {
+.container .search-form a {
     display: block;
     position: absolute;
     bottom: 0;
@@ -85,11 +85,11 @@ and open the template in the editor.
     transition: all 0.2s;
 }
 
-.container form a:hover {
+.container .search-form a:hover {
     color: #21d397;
 }
 
-.container form .error {
+.container .search-form .error {
     color: #f00;
     position: absolute;
     font-size: 14px;

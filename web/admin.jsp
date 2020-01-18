@@ -11,9 +11,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700|Roboto:400,500&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="./styles/header.css" rel="stylesheet" />
-        <link href="./styles/footer.css" rel="stylesheet" />
+        <link rel="stylesheet" href="./styles/all.css"/>
+        <link rel="stylesheet" href="./styles/bootstrap.min.css" />
+        <link rel="stylesheet" href="./styles/header.css" />
+        <link rel="stylesheet" href="./styles/footer.css" />
         <link rel="stylesheet" href="./styles/admin.css" />
     </head>
     <body>
@@ -53,7 +54,7 @@
         </header>
 
         <div class="container">
-            <form action="MainController" method="POST">
+            <form action="MainController" method="POST" class="search-form">
                 <div class="form-row">
                     <div class="form-group col-md-8">
                         <label for="content">Content(REQUIRED)</label>
@@ -104,42 +105,47 @@
             </c:if>
 
             <c:if test="${requestScope.BlogsData != null}">
-                <table class="table table-striped" style=" box-shadow: 0 5px 15px 2px rgba(0, 0, 0, 0.2);">
-                    <thead style="background: #131627; color: #fff;">
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Posted Time</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Detail</th>
-                            <th scope="col">Tick</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach items="${requestScope.BlogsData}" var="blog" varStatus="counter" >
+                <c:url var="deleteArticles" value="MainController">
+                    <c:param name="action" value="deleteArticles" />
+                </c:url>
+                <form action="${deleteArticles}" method="POST" style="text-align: center; display: inline;">
+                    <table class="table table-striped" style=" box-shadow: 0 5px 15px 2px rgba(0, 0, 0, 0.2);">
+                        <thead style="background: #131627; color: #fff;">
                             <tr>
-                                <th scope="row">${counter.count}</th>
-                                <td>${blog.title}</td>
-                                <td>${blog.author}</td>
-                                <td>${blog.postedTime}</td>
-                                <td>${blog.status}</td>
-                                <td>
-                                    <c:url var="handleBlogDetail" value="MainController">
-                                        <c:param name="action" value="getBlogDetail" />
-                                        <c:param name="blogID" value="${blog.blogID}" />
-                                    </c:url>
-                                    <a href="${handleBlogDetail}">View</a>
-                                </td>
-                                <td style="text-align: center;">
-                                    <form action="MainController" method="POST" style="text-align: center; display: inline;">
-                                        <input type="checkbox" name="tick" />
-                                    </form>
-                                </td>
+                                <th scope="col">No.</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Author</th>
+                                <th scope="col">Posted Time</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Detail</th>
+                                <th scope="col">Tick</th>
                             </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
+                        </thead>
+
+                        <tbody>
+                            <c:forEach items="${requestScope.BlogsData}" var="blog" varStatus="counter" >
+                                <tr>
+                                    <th scope="row">${counter.count}</th>
+                                    <td>${blog.title}</td>
+                                    <td>${blog.author}</td>
+                                    <td>${blog.postedTime}</td>
+                                    <td>${blog.status}</td>
+                                    <td>
+                                        <c:url var="handleBlogDetail" value="MainController">
+                                            <c:param name="action" value="getBlogDetail" />
+                                            <c:param name="blogID" value="${blog.blogID}" />
+                                        </c:url>
+                                        <a href="${handleBlogDetail}">View</a>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <input type="checkbox" name="selectedBlogs" value="${blog.blogID}" />
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                    <button type="submit" name="action" value="deleteArticles">Delete Selected Items</button>
+                </form>
 
                 <div class="page-container">
                     <c:forEach var = "index" begin = "1" end = "${requestScope.TotalPage}">
@@ -223,10 +229,7 @@
             </div>
         </footer>
 
-        <!--        <script src="https://kit.fontawesome.com/c4b1e58fe3.js" crossorigin="anonymous"></script>
-                <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>-->
+        <script src="./scripts/all.js"></script>
         <script src="./scripts/search-handling.js"></script>
         <script>
             const articleFilter = document.getElementById('article-filter')

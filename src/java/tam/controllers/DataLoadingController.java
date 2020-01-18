@@ -47,7 +47,7 @@ public class DataLoadingController extends HttpServlet {
         }
 
         String pg = request.getParameter("pg");
-        int numOfBlogsPerPage = 3;
+        int numOfBlogsPerPage = 20;
         try {
             BlogDAO blogDAO = new BlogDAO();
             PagingHandler pagingHandler = new PagingHandler();

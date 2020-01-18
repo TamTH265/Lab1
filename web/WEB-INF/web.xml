@@ -44,6 +44,10 @@
         <servlet-name>AccountActivatingController</servlet-name>
         <servlet-class>tam.controllers.AccountActivatingController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ArticlesDeletingController</servlet-name>
+        <servlet-class>tam.controllers.ArticlesDeletingController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MainController</servlet-name>
         <url-pattern>/MainController</url-pattern>
@@ -87,6 +91,10 @@
     <servlet-mapping>
         <servlet-name>AccountActivatingController</servlet-name>
         <url-pattern>/AccountActivatingController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ArticlesDeletingController</servlet-name>
+        <url-pattern>/ArticlesDeletingController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

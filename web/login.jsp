@@ -12,6 +12,7 @@
         <title>JSP Page</title>
         <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700|Roboto:400,500&display=swap"
               rel="stylesheet" />
+        <link rel="stylesheet" href="./styles/all.css" />
         <link rel="stylesheet" href="./styles/login.css" />
     </head>
     <body>
@@ -20,13 +21,13 @@
                 <h3 class="form-title">LOGIN</h3>
                 <div class="form-input">
                     <div>Email</div>
-                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <span class="icon"><i style="color: #666;" class="fas fa-user"></i></span>
                     <input type="text" id="email" name="email" class="input-field" value="${param.email}" />
                     <span class="error" id="email-error"><c:if test="${requestScope.InvalidAccount != NULL}">${requestScope.InvalidAccount}</c:if></span>
                 </div>
                 <div class="form-input">
                     <div>Password</div>
-                    <span class="icon"><i class="fas fa-key"></i></span>
+                    <span class="icon"><i style="color: #666;" class="fas fa-key"></i></span>
                     <input type="password" id="password" name="password" class="input-field" />
                     <span class="error" id="password-error"></span>
                 </div>
@@ -37,7 +38,7 @@
             </form>
         </div>
 
-        <script src="https://kit.fontawesome.com/c4b1e58fe3.js" crossorigin="anonymous"></script>
+        <script src="./scripts/all.js"></script>
         <script src="./scripts/login-handling.js"></script>
     </body>
 </html>
