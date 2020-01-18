@@ -22,6 +22,7 @@ public class ArticlesDeletingController extends HttpServlet {
 
     private static final String ERROR = "error.jsp";
     private static final String SUCCESS = "DataLoadingController";
+    private static final String INVALID = "DataLoadingController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,17 +40,23 @@ public class ArticlesDeletingController extends HttpServlet {
         try {
             BlogDAO blogDAO = new BlogDAO();
             String[] slBlogs = request.getParameterValues("selectedBlogs");
-            int slBlogsLength = slBlogs.length;
 
-            List<Integer> selectedBlogs = new ArrayList<>();
-            for (int i = 0; i < slBlogsLength; i++) {
-                selectedBlogs.add(Integer.parseInt(slBlogs[i]));
-            }
-            boolean isSuccess = blogDAO.deleteSelectedBlogs(selectedBlogs);
-            if (isSuccess) {
-                url = SUCCESS;
+            if (slBlogs != null) {
+                List<Integer> selectedBlogs = new ArrayList<>();
+                int slBlogsLength = slBlogs.length;
+                for (int i = 0; i < slBlogsLength; i++) {
+                    selectedBlogs.add(Integer.parseInt(slBlogs[i]));
+                }
+
+                boolean isSuccess = blogDAO.deleteSelectedBlogs(selectedBlogs);
+                if (isSuccess) {
+                    url = SUCCESS;
+                } else {
+                    request.setAttribute("ERROR", "Deleting Selected Articles Failed!");
+                }
             } else {
-                request.setAttribute("ERROR", "Deleting Selected Articles Failed!");
+                url = INVALID;
+                request.setAttribute("DeleteError", "Select at least 1 blog to delete!");
             }
         } catch (Exception e) {
             log("ERROR at ArticlesDeletingController: " + e.getMessage());

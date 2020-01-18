@@ -95,3 +95,25 @@ and open the template in the editor.
     font-size: 14px;
 }
 
+.container .blog-table {
+    position: relative;
+}
+
+.container .blog-table .delete-articles-btn {
+    position: absolute; 
+    top: -70px; 
+    right: 120px; 
+    display: block; 
+    padding: 0 20px; 
+    height: 40px; 
+    line-height: 40px; 
+    border: none;
+    color: #fff;
+    background: #131627;
+    transition: all .2s;
+}
+
+.container .blog-table .delete-articles-btn:hover {
+    color: #21d397
+}
+

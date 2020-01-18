@@ -42,7 +42,7 @@ public class SearchController extends HttpServlet {
         String searchedContent;
         String searchedArticle = "";
         String searchedStatus = null;
-
+        String signal = "";
         String pg = request.getParameter("pg");
         int numOfBlogsPerPage = 20;
         String url = ERROR;
@@ -55,17 +55,18 @@ public class SearchController extends HttpServlet {
                 if (role.equals("Admin")) {
                     searchedArticle = request.getParameter("searchedArticle").trim();
                     searchedStatus = request.getParameter("searchedStatus");
+                    signal = "Admin";
                 }
             }
             BlogDAO blogDAO = new BlogDAO();
             PagingHandler pagingHandler = new PagingHandler();
-            int blogsTotal = blogDAO.getSearchedBlogsTotal(searchedContent, searchedArticle, searchedStatus);
+            int blogsTotal = blogDAO.getSearchedBlogsTotal(searchedContent, searchedArticle, searchedStatus, signal);
 
             if (blogsTotal > 0) {
                 int totalPage = pagingHandler.getTotalPage(pg, blogsTotal, numOfBlogsPerPage);
                 int page = pagingHandler.getPage(pg);
                 if (page > 0 && page <= totalPage) {
-                    List<BlogDTO> blogsData = blogDAO.getSearchedBlogsData(searchedContent, searchedArticle, searchedStatus, page, numOfBlogsPerPage);
+                    List<BlogDTO> blogsData = blogDAO.getSearchedBlogsData(searchedContent, searchedArticle, searchedStatus, page, numOfBlogsPerPage, signal);
 
                     request.setAttribute("BlogsData", blogsData);
                     request.setAttribute("TotalPage", totalPage);

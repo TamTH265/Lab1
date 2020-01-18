@@ -38,11 +38,13 @@ public class DataLoadingController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
                       
         String url = INDEX;
+        String signal = "";
         HttpSession session = request.getSession(false);
         if (session.getAttribute("ROLE") != null) {
             String role = request.getSession(false).getAttribute("ROLE").toString();
             if (role.equals("Admin")) {
                 url = ADMIN;
+                signal = "Admin";
             }
         }
 
@@ -51,13 +53,13 @@ public class DataLoadingController extends HttpServlet {
         try {
             BlogDAO blogDAO = new BlogDAO();
             PagingHandler pagingHandler = new PagingHandler();
-            int blogsTotal = blogDAO.getBlogsTotal();
+            int blogsTotal = blogDAO.getBlogsTotal(signal);
 
             if (blogsTotal > 0) {
                 int page = pagingHandler.getPage(pg);
                 int totalPage = pagingHandler.getTotalPage(pg, blogsTotal, numOfBlogsPerPage);
                 if (page > 0 && page <= totalPage) {
-                    List<BlogDTO> blogsData = blogDAO.getAllBlogs(page, numOfBlogsPerPage);
+                    List<BlogDTO> blogsData = blogDAO.getAllBlogs(page, numOfBlogsPerPage, signal);
 
                     request.setAttribute("TotalPage", totalPage);
                     request.setAttribute("BlogsData", blogsData);

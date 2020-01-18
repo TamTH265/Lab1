@@ -108,7 +108,8 @@
                 <c:url var="deleteArticles" value="MainController">
                     <c:param name="action" value="deleteArticles" />
                 </c:url>
-                <form action="${deleteArticles}" method="POST" style="text-align: center; display: inline;">
+                <c:if test="${requestScope.DeleteError != null}"><span style="color: #f00; font-size: 40px;">${requestScope.DeleteError}</span></c:if>
+                <form class="blog-table" action="${deleteArticles}" method="POST">
                     <table class="table table-striped" style=" box-shadow: 0 5px 15px 2px rgba(0, 0, 0, 0.2);">
                         <thead style="background: #131627; color: #fff;">
                             <tr>
@@ -118,7 +119,7 @@
                                 <th scope="col">Posted Time</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Detail</th>
-                                <th scope="col">Tick</th>
+                                <th scope="col">Select</th>
                             </tr>
                         </thead>
 
@@ -138,15 +139,14 @@
                                         <a href="${handleBlogDetail}">View</a>
                                     </td>
                                     <td style="text-align: center;">
-                                        <input type="checkbox" name="selectedBlogs" value="${blog.blogID}" />
-                                    </td>
-                                </tr>
+                                        <input type="checkbox" name="selectedBlogs" value="${blog.blogID}" <c:if test="${blog.status.equals('Deleted')}">disabled="disabled"</c:if> />
+                                        </td>
+                                    </tr>
                             </c:forEach>
                         </tbody>
                     </table>
-                    <button type="submit" name="action" value="deleteArticles">Delete Selected Items</button>
+                    <button class="delete-articles-btn" type="submit" name="action" value="deleteArticles">Delete Selected Items</button>
                 </form>
-
                 <div class="page-container">
                     <c:forEach var = "index" begin = "1" end = "${requestScope.TotalPage}">
                         <c:url value="MainController" var="handlePage">

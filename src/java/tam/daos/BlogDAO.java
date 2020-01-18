@@ -6,7 +6,6 @@
 package tam.daos;
 
 import java.io.Serializable;
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -82,11 +81,16 @@ public class BlogDAO implements Serializable {
         return isDuplicate;
     }
 
-    public List<BlogDTO> getAllBlogs(int page, int numOfbBlogsPerPage) throws Exception {
+    public List<BlogDTO> getAllBlogs(int page, int numOfbBlogsPerPage, String signal) throws Exception {
         List<BlogDTO> blogsList = null;
 
         try {
-            String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime desc) as rowNum from Blog) as blog where blog.rowNum between ? and ?";
+            String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime desc) as rowNum from Blog signal) as blog where blog.rowNum between ? and ?";
+            if (!signal.equals("Admin")) {
+                sql = sql.replace("signal", "where Status = 'Activated'");
+            } else {
+                sql = sql.replace("signal", "");
+            }
             conn = MyConnection.getMyConnection();
             preStm = conn.prepareStatement(sql);
             preStm.setInt(1, (page - 1) * numOfbBlogsPerPage + 1);
@@ -112,11 +116,16 @@ public class BlogDAO implements Serializable {
         return blogsList;
     }
 
-    public int getBlogsTotal() throws Exception {
+    public int getBlogsTotal(String signal) throws Exception {
         int total = 0;
 
         try {
-            String sql = "select count(*) from Blog";
+            String sql = "select count(*) from Blog signal";
+            if (!signal.equals("Admin")) {
+                sql = sql.replace("signal", "where Status = 'Activated'");
+            } else {
+                sql = sql.replace("signal", "");
+            }
             conn = MyConnection.getMyConnection();
             preStm = conn.prepareStatement(sql);
             rs = preStm.executeQuery();
@@ -206,14 +215,14 @@ public class BlogDAO implements Serializable {
         return isSuccess;
     }
 
-    public List<BlogDTO> getSearchedBlogsData(String searchedContent, String searchedArticle, String searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
+    public List<BlogDTO> getSearchedBlogsData(String searchedContent, String searchedArticle, String searchedStatus, int page, int numOfBlogsPerPage, String signal) throws Exception {
         List<BlogDTO> blogsList = null;
 
         try {
             conn = MyConnection.getMyConnection();
 
             if (!searchedContent.equals("") && searchedArticle.equals("") && searchedStatus == null) {
-                searchDataByContent(searchedContent, page, numOfBlogsPerPage);
+                searchDataByContent(searchedContent, page, numOfBlogsPerPage, signal);
             } else if (!searchedContent.equals("") && !searchedArticle.equals("") && searchedStatus == null) {
                 searchDataByContentAndArticle(searchedContent, searchedArticle, page, numOfBlogsPerPage);
             } else if (!searchedContent.equals("") && searchedArticle.equals("") && searchedStatus != null) {
@@ -242,8 +251,13 @@ public class BlogDAO implements Serializable {
         return blogsList;
     }
 
-    private void searchDataByContent(String searchedContent, int page, int numOfBlogsPerPage) throws Exception {
-        String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime desc) as rowNum from Blog where Content like ?) as blog where blog.rowNum between ? and ?";
+    private void searchDataByContent(String searchedContent, int page, int numOfBlogsPerPage, String signal) throws Exception {
+        String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime desc) as rowNum from Blog where Content like ? signal) as blog where blog.rowNum between ? and ?";
+        if (!signal.equals("Admin")) {
+            sql = sql.replace("signal", "and Status = 'Activated'");
+        } else {
+            sql = sql.replace("signal", "");
+        }
         preStm = conn.prepareStatement(sql);
         preStm.setString(1, "%" + searchedContent + "%");
         preStm.setInt(2, (page - 1) * numOfBlogsPerPage + 1);
@@ -271,7 +285,7 @@ public class BlogDAO implements Serializable {
         rs = preStm.executeQuery();
     }
 
-    public void searchDataByAll(String searchedContent, String searchedArticle, String searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
+    private void searchDataByAll(String searchedContent, String searchedArticle, String searchedStatus, int page, int numOfBlogsPerPage) throws Exception {
         String sql = "select BlogID, Author, Title, PostedTime, ShortDescription, Status from (select BlogID, Author, Title, PostedTime, ShortDescription, Status, ROW_NUMBER() over (order by PostedTime desc) as rowNum from Blog where Content like ? and Title like ? and Status = ?) as blog where blog.rowNum between ? and ?";
         preStm = conn.prepareStatement(sql);
         preStm.setString(1, "%" + searchedContent + "%");
@@ -282,12 +296,12 @@ public class BlogDAO implements Serializable {
         rs = preStm.executeQuery();
     }
 
-    public int getSearchedBlogsTotal(String searchedContent, String searchedArticle, String searchedStatus) throws Exception {
+    public int getSearchedBlogsTotal(String searchedContent, String searchedArticle, String searchedStatus, String signal) throws Exception {
         int total = 0;
         try {
             conn = MyConnection.getMyConnection();
             if (!searchedContent.equals("") && searchedArticle.equals("") && searchedStatus == null) {
-                total = getSearchedBlogsByContentTotal(searchedContent);
+                total = getSearchedBlogsByContentTotal(searchedContent, signal);
             } else if (!searchedContent.equals("") && !searchedArticle.equals("") && searchedStatus == null) {
                 total = getSearchedBlogsByContentAndArticleTotal(searchedContent, searchedArticle);
             } else if (!searchedContent.equals("") && searchedArticle.equals("") && searchedStatus != null) {
@@ -303,10 +317,15 @@ public class BlogDAO implements Serializable {
         return total;
     }
 
-    private int getSearchedBlogsByContentTotal(String searchedContent) throws Exception {
+    private int getSearchedBlogsByContentTotal(String searchedContent, String signal) throws Exception {
         int total = 0;
 
-        String sql = "select count(*) from Blog where Content like ?";
+        String sql = "select count(*) from Blog where Content like ? signal";
+        if (!signal.equals("Admin")) {
+            sql = sql.replace("signal", "and Status = 'Activated'");
+        } else {
+            sql = sql.replace("signal", "");
+        }
         preStm = conn.prepareStatement(sql);
         preStm.setString(1, "%" + searchedContent + "%");
         rs = preStm.executeQuery();
