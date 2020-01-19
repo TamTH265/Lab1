@@ -51,7 +51,7 @@ public class EmailSending {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(email));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(userEmail));
-            message.setSubject("Email Verification Link");
+            message.setSubject("Email Verification Code");
             message.setText("Your verifying code: " + randomVerifyingCode);
 
             Transport.send(message);

@@ -9,9 +9,9 @@ const verifyingCodeError = document.getElementById('verifying-code-error')
 
 verifyingBtn.addEventListener('click', (e) => {
     let isValid
-    const verifyingCodeRegx = /[0-9]{6}/
-
-    if (!verifyingCodeRegx.test(verifyingCode)) {
+    const verifyingCodeRegx = /^\d{6}$/ig
+    console.log(verifyingCode.value)
+    if (!verifyingCodeRegx.test(verifyingCode.value.trim())) {
         verifyingCodeError.innerHTML = 'Verifying Code is INVALID'
         verifyingCode.innerHTML = ''
     } else {
@@ -23,6 +23,7 @@ verifyingBtn.addEventListener('click', (e) => {
     } else {
         isValid = false
     }
+    console.log(isValid)
 
     if (!isValid) {
         e.preventDefault()

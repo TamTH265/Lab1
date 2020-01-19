@@ -15,6 +15,12 @@
         <link rel="stylesheet" href="./styles/register.css">
     </head>
     <body>
+        <c:if test="${sessionScope.ROLE eq 'Admin'}">
+            <c:redirect url="admin.jsp" />
+        </c:if>
+        <c:if test="${sessionScope.ROLE eq 'Member'}">
+            <c:redirect url="index.jsp" />
+        </c:if>
         <div class="signup-form-container">
             <form id="register-form" action="MainController" method="POST">
                 <h3>Sign Up</h3>

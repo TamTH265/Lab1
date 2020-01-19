@@ -19,7 +19,7 @@ import tam.daos.AccountDAO;
  */
 public class AccountActivatingController extends HttpServlet {
 
-    private static final String SUCCESS = "login.jsp";
+    private static final String SUCCESS = "index.jsp";
     private static final String FAILED = "account-verifying.jsp";
     private static final String ERROR = "error.jsp";
 
@@ -37,6 +37,7 @@ public class AccountActivatingController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(false);
         String url = ERROR;
+
         try {
             String activateEmail = session.getAttribute("EMAIL").toString();
             String verifyingCode = session.getAttribute("VERIFYINGCODE").toString();

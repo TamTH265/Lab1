@@ -16,6 +16,12 @@
         <link rel="stylesheet" href="./styles/login.css" />
     </head>
     <body>
+        <c:if test="${sessionScope.ROLE eq 'Admin'}">
+            <c:redirect url="admin.jsp" />
+        </c:if>
+        <c:if test="${sessionScope.ROLE eq 'Member'}">
+            <c:redirect url="index.jsp" />
+        </c:if>
         <div class="login-page">
             <form class="login-form" id="login-form" method="POST" action="LoginController">
                 <h3 class="form-title">LOGIN</h3>
